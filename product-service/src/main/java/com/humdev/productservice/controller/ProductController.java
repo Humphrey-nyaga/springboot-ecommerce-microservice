@@ -2,6 +2,8 @@ package com.humdev.productservice.controller;
 
 import com.humdev.productservice.model.ApiResponse;
 
+import com.humdev.productservice.model.ProductCreateRequest;
+import com.humdev.productservice.model.ProductCreateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +11,7 @@ import com.humdev.productservice.entity.Product;
 import com.humdev.productservice.service.ProductService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/products")
@@ -22,13 +25,15 @@ public class ProductController {
     }
 
     @PostMapping("/")
-    public ApiResponse<Product> createProduct(@RequestBody Product product) {
+    public ApiResponse<ProductCreateResponse> createProduct(@RequestBody ProductCreateRequest productCreateRequest) {
 
-        Product newProduct = productService.createProduct(product);
+        ProductCreateResponse newProduct = productService.createProduct(productCreateRequest);
+        System.out.println(":::::::::::::::ProductCreateResponse:::::_>  " + newProduct);
 
-        return ApiResponse.<Product>builder()
+        return ApiResponse.<ProductCreateResponse>builder()
                 .message("Product has been added successfully")
                 .success(true)
+                .itemCount(1)
                 .data(newProduct)
                 .build();
     }
@@ -41,6 +46,25 @@ public class ProductController {
                 .success(true)
                 .itemCount(products.size())
                 .data(products)
+                .build();
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<ProductCreateResponse> getProductById(@PathVariable Long id) {
+        Optional<ProductCreateResponse> product = productService.findProductById(id);
+
+        if (product.isPresent()) {
+            return ApiResponse.<ProductCreateResponse>builder()
+                    .message("Products retrieved successfully")
+                    .success(true)
+                    .itemCount(1)
+                    .data(product.get())
+                    .build();
+        }
+        return ApiResponse.<ProductCreateResponse>builder()
+                .message("Product not found")
+                .success(false)
+                .itemCount(0)
                 .build();
     }
 
