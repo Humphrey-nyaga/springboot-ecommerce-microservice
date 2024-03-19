@@ -13,7 +13,5 @@ public interface ProductService {
 
     List<Product> findAllProducts();
 
-    Optional<ProductCreateResponse> findProductById(Long id);
+    ProductCreateResponse findProductById(Long productId);
 }
-
-

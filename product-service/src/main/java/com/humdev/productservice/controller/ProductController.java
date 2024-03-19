@@ -11,7 +11,6 @@ import com.humdev.productservice.entity.Product;
 import com.humdev.productservice.service.ProductService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/products")
@@ -49,24 +48,18 @@ public class ProductController {
                 .build();
     }
 
-    @GetMapping("/{id}")
-    public ApiResponse<ProductCreateResponse> getProductById(@PathVariable Long id) {
-        Optional<ProductCreateResponse> product = productService.findProductById(id);
+    @GetMapping("/{productId}")
+    public ApiResponse<ProductCreateResponse> getProductById(@PathVariable Long productId) {
+        ProductCreateResponse product = productService.findProductById(productId);
 
-        if (product.isPresent()) {
-            return ApiResponse.<ProductCreateResponse>builder()
-                    .message("Products retrieved successfully")
-                    .success(true)
-                    .itemCount(1)
-                    .data(product.get())
-                    .build();
-        }
         return ApiResponse.<ProductCreateResponse>builder()
-                .message("Product not found")
-                .success(false)
-                .itemCount(0)
+                .message("Product retrieved successfully")
+                .success(true)
+                .itemCount(1)
+                .data(product)
                 .build();
+        // }return ApiResponse.<ProductCreateResponse>builder().message("Product not
+        // found").success(false).itemCount(0).build();
     }
-
 
 }

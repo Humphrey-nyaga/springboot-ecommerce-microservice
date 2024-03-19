@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.humdev.productservice.entity.Product;
+import com.humdev.productservice.entity.ProductNotFoundException;
 import com.humdev.productservice.repository.ProductRepository;
 import com.humdev.productservice.service.ProductService;
 
@@ -51,9 +52,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<ProductCreateResponse> findProductById(Long id) {
+    public ProductCreateResponse findProductById(Long id) {
         Optional<Product> foundProduct = productRepository.findById(id);
-        return foundProduct.map(this::mapProductToProductResponse);
+        if (foundProduct.isPresent()) {
+            return mapProductToProductResponse(foundProduct.get());
+        } else {
+            throw new ProductNotFoundException("Product with id " + id + " does not exist.");
+        }
     }
 
 }

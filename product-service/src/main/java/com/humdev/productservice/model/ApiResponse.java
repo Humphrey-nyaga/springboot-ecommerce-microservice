@@ -1,5 +1,10 @@
 package com.humdev.productservice.model;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +17,13 @@ import lombok.NoArgsConstructor;
 public class ApiResponse<T> {
 
     private String message;
-    private int itemCount;
-    private boolean success;
-    private T data;
 
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    private int itemCount;
+
+    private boolean success;
+
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    private T data;
 
 }
