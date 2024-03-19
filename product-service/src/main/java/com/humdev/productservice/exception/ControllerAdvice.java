@@ -1,4 +1,4 @@
-package com.humdev.productservice.entity;
+package com.humdev.productservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,6 +17,19 @@ public class ControllerAdvice {
         .success(false)
         .message(ex.getMessage())
         .build();
+
+        return response;
+    }
+
+    // Handle all exceptions that may not have been handled gracefully
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ApiResponse<?> handleAnyOtherExceptionGracefully(Exception ex) {
+
+        ApiResponse<?> response = ApiResponse.builder()
+                .success(false)
+                .message("An Error Occured")
+                .build();
 
         return response;
     }

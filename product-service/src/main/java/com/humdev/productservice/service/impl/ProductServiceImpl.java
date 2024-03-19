@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.humdev.productservice.entity.Product;
-import com.humdev.productservice.entity.ProductNotFoundException;
+import com.humdev.productservice.exception.ProductNotFoundException;
 import com.humdev.productservice.repository.ProductRepository;
 import com.humdev.productservice.service.ProductService;
 

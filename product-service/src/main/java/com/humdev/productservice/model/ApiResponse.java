@@ -18,7 +18,7 @@ public class ApiResponse<T> {
 
     private String message;
 
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private int itemCount;
 
     private boolean success;

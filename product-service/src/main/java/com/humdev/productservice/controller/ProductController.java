@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import com.humdev.productservice.entity.Product;
 import com.humdev.productservice.service.ProductService;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/products")
+@Slf4j
 public class ProductController {
 
     private final ProductService productService;
