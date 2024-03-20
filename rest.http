@@ -1,0 +1,8 @@
+POST http://localhost:6002/api/v1/inventory
+Content-Type: application/json
+
+{
+    "productCode" : "MCB303",
+    "quantity" : 20
+
+}
