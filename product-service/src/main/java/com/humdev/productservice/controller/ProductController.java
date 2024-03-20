@@ -65,4 +65,14 @@ public class ProductController {
         // found").success(false).itemCount(0).build();
     }
 
+    @DeleteMapping("/{productId}")
+    public ApiResponse<String> deleteProductById(@PathVariable Long productId) {
+        productService.deleteProductById(productId);
+
+        return ApiResponse.<String>builder()
+                .message("Product deleted successfully")
+                .success(true)
+                .build();
+    }
+
 }

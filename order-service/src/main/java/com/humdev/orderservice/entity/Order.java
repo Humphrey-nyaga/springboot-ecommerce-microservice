@@ -39,17 +39,19 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "order_time")
+    @Column(name = "order_creation_time", updatable = false)
     @CreationTimestamp
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss,SSS")
-    private LocalDateTime orderTime;
+    private LocalDateTime orderCreationTime;
 
-    @Column(name = "order_number")
+    @Column(
+            name = "order_number",
+            unique = true)
     private String orderNumber;
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 }
 

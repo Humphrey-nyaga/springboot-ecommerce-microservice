@@ -15,4 +15,6 @@ public class ProductCreateResponse {
     private String name;
 
     private BigDecimal price;
+    private String productCode;
+
 }

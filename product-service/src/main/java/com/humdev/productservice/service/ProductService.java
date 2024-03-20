@@ -5,7 +5,6 @@ import com.humdev.productservice.model.ProductCreateRequest;
 import com.humdev.productservice.model.ProductCreateResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductService {
 
@@ -14,4 +13,6 @@ public interface ProductService {
     List<Product> findAllProducts();
 
     ProductCreateResponse findProductById(Long productId);
+
+    void deleteProductById(Long productId);
 }
