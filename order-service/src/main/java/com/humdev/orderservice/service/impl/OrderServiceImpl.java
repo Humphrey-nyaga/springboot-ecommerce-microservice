@@ -29,9 +29,9 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final GenerateOrderID generateOrderID;
-    private final WebClient webClient;
+    private final WebClient.Builder webClient;
 
-    public OrderServiceImpl(OrderRepository orderRepository, GenerateOrderID generateOrderID, WebClient webClient) {
+    public OrderServiceImpl(OrderRepository orderRepository, GenerateOrderID generateOrderID, WebClient.Builder webClient) {
         this.orderRepository = orderRepository;
         this.generateOrderID = generateOrderID;
         this.webClient = webClient;
@@ -75,8 +75,8 @@ public class OrderServiceImpl implements OrderService {
 
     private ApiResponse<Boolean> checkItemsAvailabilityInInventory(List<String> productCodes,
             List<Integer> productQuantity) {
-        ApiResponse<Boolean> response = webClient.get()
-                .uri("http://localhost:6002/api/v1/inventory/validateInventory",
+        ApiResponse<Boolean> response = webClient.build().get()
+                .uri("http://INVENTORY-SERVICE/api/v1/inventory/validateInventory",
                         uriBuilder -> uriBuilder
                                 .queryParam("productQuantities", productQuantity)
                                 .queryParam("productCodes", productCodes)
