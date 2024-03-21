@@ -7,6 +7,7 @@ import org.apache.tomcat.util.http.parser.MediaType;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -36,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
         this.webClient = webClient;
     }
 
-    public Order createOrder(OrderRequest orderRequest) {
+    public String createOrder(OrderRequest orderRequest) {
 
         List<String> productCodes = new ArrayList();
         List<Integer> productQuantity = new ArrayList();
@@ -60,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
             order.setOrderItems(orderItems);
 
             var newOrder = orderRepository.save(order);
-            return newOrder;
+            return newOrder.getOrderNumber();
 
         } else {
 
@@ -82,7 +83,7 @@ public class OrderServiceImpl implements OrderService {
                                 .build())
 
                 .retrieve()
-                .onStatus(HttpStatusCode::isError, clientResponse -> {})
+                // .onStatus(HttpStatusCode::isError, clientResponse -> {})
                 .bodyToMono(new ParameterizedTypeReference<ApiResponse<Boolean>>() {
                 })
                 .block();

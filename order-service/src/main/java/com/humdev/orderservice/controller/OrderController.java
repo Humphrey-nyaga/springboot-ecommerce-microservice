@@ -21,13 +21,13 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    public ApiResponse<Order> placeOrder(@RequestBody OrderRequest orderRequest) {
-        Order order = orderService.createOrder(orderRequest);
-        ApiResponse<Order> response = ApiResponse.<Order>builder()
+    public ApiResponse<String> placeOrder(@RequestBody OrderRequest orderRequest) {
+        String orderNumber = orderService.createOrder(orderRequest);
+        ApiResponse<String> response = ApiResponse.<String>builder()
                 .message("Order placed successfully")
                 .success(true)
                 .itemCount(1)
-                .data(order)
+                .data(orderNumber)
                 .build();
         return response;
     }
