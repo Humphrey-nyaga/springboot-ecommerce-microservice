@@ -1,6 +1,8 @@
 package com.humdev.inventoryservice.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,5 +23,6 @@ public class ApiResponse<T> {
 
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private T data;
+
 
 }

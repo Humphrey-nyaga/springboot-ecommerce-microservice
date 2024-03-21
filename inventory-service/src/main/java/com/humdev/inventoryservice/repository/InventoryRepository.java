@@ -8,6 +8,8 @@ import com.humdev.inventoryservice.entity.Inventory;
 @Repository
 public interface InventoryRepository extends MongoRepository<Inventory, String>{
 
+    Inventory findByProductCode(String string);
+
 }
 
   

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.humdev.orderservice.entity.Order;
 import com.humdev.orderservice.model.ApiResponse;
-import com.humdev.orderservice.model.OrderItemRequest;
 import com.humdev.orderservice.model.OrderRequest;
 import com.humdev.orderservice.service.OrderService;
 
