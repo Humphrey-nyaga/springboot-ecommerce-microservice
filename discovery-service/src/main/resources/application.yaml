@@ -5,6 +5,8 @@ spring:
     name: discovery-service
 
 eureka:
+  instance:
+    hostname: localhost
   client:
     registerWithEureka: false
     fetchRegistry: false
