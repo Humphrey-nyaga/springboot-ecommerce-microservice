@@ -2,6 +2,7 @@ package com.humdev.orderservice.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.tomcat.util.http.parser.MediaType;
 import org.springframework.beans.BeanUtils;
@@ -9,12 +10,16 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.humdev.orderservice.config.GenerateOrderID;
 import com.humdev.orderservice.entity.Order;
 import com.humdev.orderservice.entity.OrderItem;
 import com.humdev.orderservice.entity.OrderItemResponse;
+import com.humdev.orderservice.exception.InventoryServiceException;
+import com.humdev.orderservice.exception.NotEnoughQuantityException;
+import com.humdev.orderservice.exception.OrderServiceException;
 import com.humdev.orderservice.model.ApiResponse;
 import com.humdev.orderservice.model.OrderItemRequest;
 import com.humdev.orderservice.model.OrderRequest;
@@ -22,6 +27,7 @@ import com.humdev.orderservice.repository.OrderRepository;
 import com.humdev.orderservice.service.OrderService;
 
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
 @Service
 @Slf4j
@@ -31,7 +37,8 @@ public class OrderServiceImpl implements OrderService {
     private final GenerateOrderID generateOrderID;
     private final WebClient.Builder webClient;
 
-    public OrderServiceImpl(OrderRepository orderRepository, GenerateOrderID generateOrderID, WebClient.Builder webClient) {
+    public OrderServiceImpl(OrderRepository orderRepository, GenerateOrderID generateOrderID,
+            WebClient.Builder webClient) {
         this.orderRepository = orderRepository;
         this.generateOrderID = generateOrderID;
         this.webClient = webClient;
@@ -50,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("Product Codes " + productCodes);
         log.info("Product Quantities " + productQuantity);
-        ApiResponse<Boolean> response = this.checkItemsAvailabilityInInventory(productCodes, productQuantity);
+        ApiResponse<?> response = this.checkItemsAvailabilityInInventory(productCodes, productQuantity);
 
         if (response.isSuccess()) {
             Order order = new Order();
@@ -65,17 +72,21 @@ public class OrderServiceImpl implements OrderService {
 
         } else {
 
-            log.error("Not Enough stock :::::::::::: " + response.getData());
+            log.error("Not Enough stock >>>>>>>>> :::::::::::: " + response.getData());
 
-            return null;
+            if (response.getData() instanceof Map) {
+                throw new NotEnoughQuantityException("Not enough quantity in stock",
+                        (Map<String, Integer>) response.getData());
+            }
+            throw new OrderServiceException(response.getMessage());
 
         }
 
     }
 
-    private ApiResponse<Boolean> checkItemsAvailabilityInInventory(List<String> productCodes,
+    private ApiResponse<?> checkItemsAvailabilityInInventory(List<String> productCodes,
             List<Integer> productQuantity) {
-        ApiResponse<Boolean> response = webClient.build().get()
+        ApiResponse<?> response = webClient.build().get()
                 .uri("http://INVENTORY-SERVICE/api/v1/inventory/validateInventory",
                         uriBuilder -> uriBuilder
                                 .queryParam("productQuantities", productQuantity)
@@ -83,12 +94,17 @@ public class OrderServiceImpl implements OrderService {
                                 .build())
 
                 .retrieve()
-                // .onStatus(HttpStatusCode::isError, clientResponse -> {})
-                .bodyToMono(new ParameterizedTypeReference<ApiResponse<Boolean>>() {
+                .onStatus(HttpStatusCode::isError, clientResponse -> handleError(clientResponse))
+                .bodyToMono(new ParameterizedTypeReference<ApiResponse<?>>() {
                 })
                 .block();
         log.info("::::::::::::Returning inventory check response:::::::::::::::::::::::");
         return response;
+    }
+
+    private Mono<? extends Throwable> handleError(ClientResponse clientResponse) {
+        log.error("Error encountered: {} ", clientResponse.statusCode());
+        return Mono.error(new InventoryServiceException("Error in the inventory service"));
     }
 
     private OrderItem mapToOrderItemEntity(OrderItemRequest orderItemRequest) {

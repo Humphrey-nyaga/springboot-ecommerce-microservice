@@ -1,5 +1,7 @@
 package com.humdev.inventoryservice.exception;
 
+import java.util.Map;
+
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,10 +14,10 @@ import com.humdev.inventoryservice.model.ApiResponse;
 public class ControllerAdvice {
 
     @ExceptionHandler(NotEnoughQuantityException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ApiResponse<?> notEnoughQuantityException(NotEnoughQuantityException ex) {
+    @ResponseStatus(code = HttpStatus.OK)
+    public ApiResponse<Map<String, Integer>> notEnoughQuantityException(NotEnoughQuantityException ex) {
 
-        ApiResponse<?> response = ApiResponse.builder()
+        ApiResponse<Map<String, Integer>> response = ApiResponse.<Map<String, Integer>> builder()
                 .success(false)
                 .message(ex.getMessage())
                 .data(ex.getUnavailableItems())

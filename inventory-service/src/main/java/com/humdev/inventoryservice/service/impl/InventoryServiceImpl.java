@@ -47,9 +47,8 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public List<InventoryResponse> findAllInventory() {
 
-        List<InventoryResponse> inventory = inventoryRepository.findAll().stream().map(this::mapToInventoryResponse)
+        return inventoryRepository.findAll().stream().map(this::mapToInventoryResponse)
                 .toList();
-        return inventory;
     }
 
     @Override
@@ -59,7 +58,7 @@ public class InventoryServiceImpl implements InventoryService {
         log.info("::::::::Inventory Product Codes ::::::::::::: " + productCodes);
         log.info("::::::::Inventory Product Quantity::::::::::::: " + productQuantities);
 
-        Integer listSize = productCodes.size();
+        int listSize = productCodes.size();
         for (int i = 0; i < listSize; i++) {
 
             Integer productQuantity = productQuantities.get(i);
