@@ -1,5 +1,6 @@
 package com.humdev.productservice.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -11,12 +12,12 @@ import com.humdev.productservice.model.ApiResponse;
 public class ControllerAdvice {
     @ExceptionHandler(ProductNotFoundException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ApiResponse<?> handleProductNotFound(ProductNotFoundException ex){
+    public ApiResponse<?> handleProductNotFound(ProductNotFoundException ex) {
 
         ApiResponse<?> response = ApiResponse.builder()
-        .success(false)
-        .message(ex.getMessage())
-        .build();
+                .success(false)
+                .message(ex.getMessage())
+                .build();
 
         return response;
     }
@@ -28,7 +29,19 @@ public class ControllerAdvice {
 
         ApiResponse<?> response = ApiResponse.builder()
                 .success(false)
-                .message("An Error Occured")
+                .message("An error occurred")
+                .build();
+
+        return response;
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ApiResponse<?> handleDataIntegrityViolationExceptApiResponse(DataIntegrityViolationException ex) {
+
+        ApiResponse<?> response = ApiResponse.builder()
+                .success(false)
+                .message("A product with the product code already exists!!")
                 .build();
 
         return response;
