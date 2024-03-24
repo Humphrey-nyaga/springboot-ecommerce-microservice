@@ -23,18 +23,30 @@ public class ControllerAdvice {
         return response;
     }
 
-   @ExceptionHandler(NotEnoughQuantityException.class)
+    @ExceptionHandler(InvalidStartAndEndDatesException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ApiResponse<?> handleInvalidStartAndEndDatesException(InvalidStartAndEndDatesException ex) {
+
+        ApiResponse<?> response = ApiResponse.builder()
+                .success(false)
+                .message(ex.getMessage())
+                .build();
+
+        return response;
+    }
+
+    @ExceptionHandler(NotEnoughQuantityException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ApiResponse<Map<String, Integer>> notEnoughQuantityException(NotEnoughQuantityException ex) {
 
-        ApiResponse<Map<String, Integer>> response = ApiResponse.<Map<String, Integer>> builder()
+        ApiResponse<Map<String, Integer>> response = ApiResponse.<Map<String, Integer>>builder()
                 .success(false)
                 .message(ex.getMessage())
                 .data(ex.getUnavailableItems())
                 .build();
 
         return response;
-    } 
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)

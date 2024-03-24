@@ -1,5 +1,7 @@
 package com.humdev.orderservice.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +9,6 @@ import java.util.Map;
 import org.apache.tomcat.util.http.parser.MediaType;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -17,6 +18,7 @@ import com.humdev.orderservice.config.GenerateOrderID;
 import com.humdev.orderservice.entity.Order;
 import com.humdev.orderservice.entity.OrderItem;
 import com.humdev.orderservice.entity.OrderItemResponse;
+import com.humdev.orderservice.exception.InvalidStartAndEndDatesException;
 import com.humdev.orderservice.exception.InventoryServiceException;
 import com.humdev.orderservice.exception.NotEnoughQuantityException;
 import com.humdev.orderservice.exception.OrderServiceException;
@@ -70,10 +72,9 @@ public class OrderServiceImpl implements OrderService {
 
             var newOrder = orderRepository.save(order);
 
-
-            // reduce the inventory here 
+            // reduce the inventory here
             ApiResponse<?> inventoryReduced = this.reduceItemsInventory(productCodes, productQuantity);
-   
+
             return newOrder.getOrderNumber();
 
         } else {
@@ -150,6 +151,23 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderResponse> getAllOrders() {
         return orderRepository.findAll().stream().map(this::mapToOrderResponse).toList();
+    }
+
+    @Override
+    public List<OrderResponse> getOrdersBetweenDates(LocalDate startDate, LocalDate endDate) {
+
+        if (!startDate.isAfter(endDate)) {
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay(); // Adding one day to include the end date
+
+            return orderRepository.findByOrderTimeBetween(startDateTime, endDateTime)
+                    .stream()
+                    .map(this::mapToOrderResponse)
+                    .toList();
+        } else {
+            throw new InvalidStartAndEndDatesException("Start Date Cannot Be After End Date");
+        }
+
     }
 
 }

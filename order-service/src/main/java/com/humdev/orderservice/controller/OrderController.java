@@ -1,20 +1,22 @@
 package com.humdev.orderservice.controller;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.service.annotation.GetExchange;
 
-import com.humdev.orderservice.entity.Order;
 import com.humdev.orderservice.model.ApiResponse;
 import com.humdev.orderservice.model.OrderRequest;
 import com.humdev.orderservice.model.OrderResponse;
 import com.humdev.orderservice.service.OrderService;
 
+import jakarta.ws.rs.QueryParam;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -49,8 +51,17 @@ public class OrderController {
     }
 
     @GetMapping("/")
-    public ApiResponse<List<OrderResponse>> getALlOrders() {
-        List<OrderResponse> ordersResponse = orderService.getAllOrders();
+    public ApiResponse<List<OrderResponse>> getAllOrders(
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate) {
+
+        List<OrderResponse> ordersResponse = new ArrayList<>();
+
+        if (startDate != null && endDate != null) {
+            ordersResponse = orderService.getOrdersBetweenDates(startDate, endDate);
+        } else {
+            ordersResponse = orderService.getAllOrders();
+        }
         ApiResponse<List<OrderResponse>> response = ApiResponse.<List<OrderResponse>>builder()
                 .message("All Orders")
                 .success(true)
@@ -59,4 +70,5 @@ public class OrderController {
                 .build();
         return response;
     }
+
 }

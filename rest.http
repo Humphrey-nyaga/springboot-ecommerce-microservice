@@ -12,7 +12,12 @@ Content-Type: application/json
 
 ###
 # @AllOrder
-GET  http://localhost:7000/api/v1/orders/
+GET  http://localhost:7000/api/v1/orders
+Content-Type: application/json
+
+###
+# @AllOrder betweeb two dates
+GET  http://localhost:7000/api/v1/orders/?startDate=2024-03-20&endDate=2024-03-25
 Content-Type: application/json
 
 
