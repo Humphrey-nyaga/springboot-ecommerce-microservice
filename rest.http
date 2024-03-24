@@ -15,9 +15,27 @@ Content-Type: application/json
 GET  http://localhost:7000/api/v1/orders/
 Content-Type: application/json
 
+
+###
+# @Create an Inventory
+POST  http://localhost:7000/api/v1/inventory/
+Content-Type: application/json
+
+{
+  "productCode": "MCG002",
+  "quantity": -12
+}
+
+
 ###
 # @AllInventory
 GET  http://localhost:7000/api/v1/inventory/
+Content-Type: application/json
+
+
+###
+# @Delete Inventory BY Id
+DELETE  http://localhost:7000/api/v1/inventory/delete/660022591f43f32d49890ff4
 Content-Type: application/json
 
 
@@ -30,11 +48,11 @@ Content-Type: application/json
   "orderItems": [
     {
       "productCode": "MCC002",
-      "quantity": 50
+      "quantity": 20
     },
     {
       "productCode": "MCA002",
-      "quantity": 50
+      "quantity": 20
     }
   ]
 }

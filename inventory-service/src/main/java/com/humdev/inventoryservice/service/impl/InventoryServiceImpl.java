@@ -59,6 +59,8 @@ public class InventoryServiceImpl implements InventoryService {
     public Boolean checkInventory(List<String> productCodes, List<Integer> productQuantities) {
         Map<String, Integer> unavailableItems = new HashMap<>();
 
+        List<Inventory> inventories = inventoryRepository.findByProductCodeIn(productCodes);
+
         log.info("::::::::Inventory Product Codes ::::::::::::: " + productCodes);
         log.info("::::::::Inventory Product Quantity::::::::::::: " + productQuantities);
 
@@ -117,6 +119,11 @@ public class InventoryServiceImpl implements InventoryService {
 
         inventoryRepository.saveAll(inventories);
         return true;
+    }
+
+    @Override
+    public void deleteInventoryById(String inventoryId) {
+        inventoryRepository.deleteById(inventoryId);
     }
 
 }

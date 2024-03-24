@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,5 +23,6 @@ public class Inventory {
     @Indexed(unique = true)
     private String productCode;
     
+    @Min(value = 0, message = "Quantity cannot be less than zero")
     private Integer quantity;
 }

@@ -15,8 +15,11 @@ import com.humdev.orderservice.model.OrderRequest;
 import com.humdev.orderservice.model.OrderResponse;
 import com.humdev.orderservice.service.OrderService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("api/v1/orders")
+@Slf4j
 public class OrderController {
 
     private final OrderService orderService;
@@ -27,6 +30,9 @@ public class OrderController {
 
     @PostMapping("/")
     public ApiResponse<String> placeOrder(@RequestBody OrderRequest orderRequest) {
+
+        long startTime = System.currentTimeMillis();
+        log.info("::::Order request Start Time::::: {} " + startTime);
         String orderNumber = orderService.createOrder(orderRequest);
         ApiResponse<String> response = ApiResponse.<String>builder()
                 .message("Order placed successfully")
@@ -34,8 +40,13 @@ public class OrderController {
                 .itemCount(1)
                 .data(orderNumber)
                 .build();
+
+        long stopTime = System.currentTimeMillis();
+        log.info("::::Order Stop Time::::: {} " + stopTime);
+        log.info("::::Order duration--> request to response Time::::: {} " + (stopTime - startTime));
         return response;
-    } 
+
+    }
 
     @GetMapping("/")
     public ApiResponse<List<OrderResponse>> getALlOrders() {

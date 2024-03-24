@@ -12,10 +12,13 @@ import com.humdev.inventoryservice.model.InventoryRequest;
 import com.humdev.inventoryservice.model.InventoryResponse;
 import com.humdev.inventoryservice.service.InventoryService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -32,7 +35,7 @@ public class InventoryController {
 
     @PostMapping("/")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ApiResponse<InventoryResponse> createInventory(@RequestBody InventoryRequest inventoryRequest) {
+    public ApiResponse<InventoryResponse> createInventory(@RequestBody @Valid InventoryRequest inventoryRequest) {
 
         InventoryResponse newInventory = inventoryService.createInventory(inventoryRequest);
         ApiResponse<InventoryResponse> response = ApiResponse.<InventoryResponse>builder()
@@ -86,6 +89,20 @@ public class InventoryController {
         ApiResponse<Boolean> response = ApiResponse.<Boolean>builder()
                 .data(isSuccessful)
                 .message("Inventory reduced successfully")
+                .success(true)
+                .build();
+        return response;
+    }
+
+
+    @DeleteMapping("/delete/{inventoryId}")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public ApiResponse<String> deleteInventoryById(@PathVariable String inventoryId) {
+
+        log.info("::::::::::::::::::Inventory to Delete Id Is: :::::::::::::: {}"  + inventoryId);
+        inventoryService.deleteInventoryById(inventoryId);
+        ApiResponse<String> response = ApiResponse.<String>builder()
+                .message("Inventory Item deleted successfully")
                 .success(true)
                 .build();
         return response;
