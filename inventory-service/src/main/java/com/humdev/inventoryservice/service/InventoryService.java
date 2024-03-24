@@ -12,4 +12,5 @@ public interface InventoryService {
     List<InventoryResponse> findAllInventory();
 
     Boolean checkInventory(List<String> productCodes, List<Integer> productQuantities);
+    Boolean reduceInventory(List<String> productCodes, List<Integer> productQuantities);
 }

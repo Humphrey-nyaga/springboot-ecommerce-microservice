@@ -23,6 +23,7 @@ import com.humdev.orderservice.exception.OrderServiceException;
 import com.humdev.orderservice.model.ApiResponse;
 import com.humdev.orderservice.model.OrderItemRequest;
 import com.humdev.orderservice.model.OrderRequest;
+import com.humdev.orderservice.model.OrderResponse;
 import com.humdev.orderservice.repository.OrderRepository;
 import com.humdev.orderservice.service.OrderService;
 
@@ -68,6 +69,11 @@ public class OrderServiceImpl implements OrderService {
             order.setOrderItems(orderItems);
 
             var newOrder = orderRepository.save(order);
+
+
+            // reduce the inventory here 
+            ApiResponse<?> inventoryReduced = this.reduceItemsInventory(productCodes, productQuantity);
+   
             return newOrder.getOrderNumber();
 
         } else {
@@ -82,6 +88,22 @@ public class OrderServiceImpl implements OrderService {
 
         }
 
+    }
+
+    private ApiResponse<?> reduceItemsInventory(List<String> productCodes, List<Integer> productQuantity) {
+        ApiResponse<?> response = webClient.build().get()
+                .uri("http://INVENTORY-SERVICE/api/v1/inventory/reduceInventory",
+                        uriBuilder -> uriBuilder
+                                .queryParam("productQuantities", productQuantity)
+                                .queryParam("productCodes", productCodes)
+                                .build())
+
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<ApiResponse<?>>() {
+                })
+                .block();
+        log.info("::::::::::::Reducing inventory response:::::::::::::::::::::::");
+        return response;
     }
 
     private ApiResponse<?> checkItemsAvailabilityInInventory(List<String> productCodes,
@@ -117,6 +139,17 @@ public class OrderServiceImpl implements OrderService {
         OrderItemResponse orderItemResponse = new OrderItemResponse();
         BeanUtils.copyProperties(orderItem, orderItemResponse);
         return orderItemResponse;
+    }
+
+    private OrderResponse mapToOrderResponse(Order order) {
+        OrderResponse orderResponse = new OrderResponse();
+        BeanUtils.copyProperties(order, orderResponse);
+        return orderResponse;
+    }
+
+    @Override
+    public List<OrderResponse> getAllOrders() {
+        return orderRepository.findAll().stream().map(this::mapToOrderResponse).toList();
     }
 
 }

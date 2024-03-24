@@ -1,8 +1,40 @@
-POST http://localhost:6002/api/v1/inventory
+###
+# @CreateProduct
+POST http://localhost:7000/api/v1/products/
 Content-Type: application/json
 
 {
-    "productCode" : "MCB303",
-    "quantity" : 20
+      "productCode": "MCC9988",
+      "price": 2000,
+      "name": "MacBook Pro"
+      
+}
 
+###
+# @AllOrder
+GET  http://localhost:7000/api/v1/orders/
+Content-Type: application/json
+
+###
+# @AllInventory
+GET  http://localhost:7000/api/v1/inventory/
+Content-Type: application/json
+
+
+###
+# @Place order
+POST http://localhost:7000/api/v1/orders/
+Content-Type: application/json
+
+{
+  "orderItems": [
+    {
+      "productCode": "MCC002",
+      "quantity": 50
+    },
+    {
+      "productCode": "MCA002",
+      "quantity": 50
+    }
+  ]
 }

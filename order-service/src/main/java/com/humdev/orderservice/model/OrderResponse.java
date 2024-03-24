@@ -15,5 +15,5 @@ public class OrderResponse {
 
     private LocalDateTime orderTime;
 
-    private LocalDateTime orderNumber;
+    private String orderNumber;
 }

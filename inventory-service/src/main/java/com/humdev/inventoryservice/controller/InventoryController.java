@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.humdev.inventoryservice.entity.Inventory;
 import com.humdev.inventoryservice.model.ApiResponse;
 import com.humdev.inventoryservice.model.InventoryRequest;
 import com.humdev.inventoryservice.model.InventoryResponse;
@@ -70,6 +69,23 @@ public class InventoryController {
         ApiResponse<Boolean> response = ApiResponse.<Boolean>builder()
                 .data(isValid)
                 .message("Inventory exists")
+                .success(true)
+                .build();
+        return response;
+    }
+
+    @GetMapping("/reduceInventory")
+    @ResponseStatus(code = HttpStatus.OK)
+    public ApiResponse<Boolean> reduceItemsFromInventory(
+            @RequestParam("productCodes") List<String> productCodes,
+            @RequestParam("productQuantities") List<Integer> productQuantities) {
+
+        log.info("::::::::::::Inventory Controller To Reduce Items:::::::::::::::::::::::");
+
+        Boolean isSuccessful = inventoryService.reduceInventory(productCodes, productQuantities);
+        ApiResponse<Boolean> response = ApiResponse.<Boolean>builder()
+                .data(isSuccessful)
+                .message("Inventory reduced successfully")
                 .success(true)
                 .build();
         return response;

@@ -11,6 +11,10 @@ public class NotEnoughQuantityException extends RuntimeException {
         this.unavailableItems = unavailableItems;
     }
 
+    public NotEnoughQuantityException(String message) {
+        super(message);
+    }
+
     public Map<String, Integer> getUnavailableItems() {
         return unavailableItems;
     }

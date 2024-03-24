@@ -44,7 +44,7 @@ public class Order {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss,SSS")
-    private LocalDateTime orderCreationTime;
+    private LocalDateTime orderTime;
 
     @Column(
             name = "order_number",
