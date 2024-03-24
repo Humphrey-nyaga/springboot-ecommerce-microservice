@@ -51,17 +51,29 @@ public class OrderController {
     }
 
     @GetMapping("/")
-    public ApiResponse<List<OrderResponse>> getAllOrders(
-            @RequestParam(required = false) LocalDate startDate,
-            @RequestParam(required = false) LocalDate endDate) {
+    public ApiResponse<List<OrderResponse>> getAllOrders() {
 
         List<OrderResponse> ordersResponse = new ArrayList<>();
 
-        if (startDate != null && endDate != null) {
-            ordersResponse = orderService.getOrdersBetweenDates(startDate, endDate);
-        } else {
-            ordersResponse = orderService.getAllOrders();
-        }
+        ordersResponse = orderService.getAllOrders();
+
+        ApiResponse<List<OrderResponse>> response = ApiResponse.<List<OrderResponse>>builder()
+                .message("All Orders")
+                .success(true)
+                .itemCount(ordersResponse.size())
+                .data(ordersResponse)
+                .build();
+        return response;
+    }
+
+    @GetMapping("/filter")
+    public ApiResponse<List<OrderResponse>> filterOrders(
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate) {
+
+        List<OrderResponse> ordersResponse = orderService.getOrdersByDateRange(startDate, endDate);
+       log.info(":::::::::::Start Date::::::::::: " + startDate);
+       log.info(":::::::::::End Date::::::::::: " + endDate);
         ApiResponse<List<OrderResponse>> response = ApiResponse.<List<OrderResponse>>builder()
                 .message("All Orders")
                 .success(true)

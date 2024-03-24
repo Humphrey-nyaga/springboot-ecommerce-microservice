@@ -12,12 +12,27 @@ Content-Type: application/json
 
 ###
 # @AllOrder
-GET  http://localhost:7000/api/v1/orders
+GET  http://localhost:7000/api/v1/orders/
 Content-Type: application/json
 
 ###
-# @AllOrder betweeb two dates
-GET  http://localhost:7000/api/v1/orders/?startDate=2024-03-20&endDate=2024-03-25
+# @AllOrder between two dates
+GET  http://localhost:7000/api/v1/orders/filter?startDate=2024-03-20&endDate=2024-03-22
+Content-Type: application/json
+
+###
+# @AllOrder before a certain date
+GET  http://localhost:7000/api/v1/orders/filter?endDate=2024-03-22
+Content-Type: application/json
+
+###
+# @AllOrder after a certain date
+GET  http://localhost:7000/api/v1/orders/filter?startDate=2024-03-20
+Content-Type: application/json
+
+###
+# @AllOrder after a certain date // returns an error..one value must be present
+GET  http://localhost:7000/api/v1/orders/filter
 Content-Type: application/json
 
 

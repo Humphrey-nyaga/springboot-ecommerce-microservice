@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.tomcat.util.http.parser.MediaType;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +21,7 @@ import com.humdev.orderservice.entity.OrderItem;
 import com.humdev.orderservice.entity.OrderItemResponse;
 import com.humdev.orderservice.exception.InvalidStartAndEndDatesException;
 import com.humdev.orderservice.exception.InventoryServiceException;
+import com.humdev.orderservice.exception.MissingDateRangeException;
 import com.humdev.orderservice.exception.NotEnoughQuantityException;
 import com.humdev.orderservice.exception.OrderServiceException;
 import com.humdev.orderservice.model.ApiResponse;
@@ -153,19 +155,33 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAll().stream().map(this::mapToOrderResponse).toList();
     }
 
+
     @Override
-    public List<OrderResponse> getOrdersBetweenDates(LocalDate startDate, LocalDate endDate) {
+    public List<OrderResponse> getOrdersByDateRange(LocalDate startDate, LocalDate endDate) {
 
-        if (!startDate.isAfter(endDate)) {
-        LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay(); // Adding one day to include the end date
-
-            return orderRepository.findByOrderTimeBetween(startDateTime, endDateTime)
+        if (startDate == null && endDate == null) {
+            throw new MissingDateRangeException("At least one of startDate or endDate must be provided");
+        }
+        if (startDate != null && endDate != null) {
+            return orderRepository.findByOrderTimeBetween(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay())
                     .stream()
                     .map(this::mapToOrderResponse)
                     .toList();
+
+        } else if (startDate != null) {
+            return orderRepository.findByOrderTimeOnOrAfter(startDate.atStartOfDay())
+                    .stream()
+                    .map(this::mapToOrderResponse)
+                    .toList();
+
+        } else if (endDate != null) {
+            return orderRepository.findByOrderTimeBeforeOrOn(endDate.plusDays(1).atStartOfDay())
+                    .stream()
+                    .map(this::mapToOrderResponse)
+                    .toList();
+                    
         } else {
-            throw new InvalidStartAndEndDatesException("Start Date Cannot Be After End Date");
+            throw new MissingDateRangeException("At least one of startDate or endDate must be provided");
         }
 
     }

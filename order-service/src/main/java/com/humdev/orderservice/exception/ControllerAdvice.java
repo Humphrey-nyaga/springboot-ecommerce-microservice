@@ -35,6 +35,18 @@ public class ControllerAdvice {
         return response;
     }
 
+    @ExceptionHandler(MissingDateRangeException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ApiResponse<?> handleInvalidStartAndEndDatesException(MissingDateRangeException ex) {
+
+        ApiResponse<?> response = ApiResponse.builder()
+                .success(false)
+                .message(ex.getMessage())
+                .build();
+
+        return response;
+    }
+
     @ExceptionHandler(NotEnoughQuantityException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ApiResponse<Map<String, Integer>> notEnoughQuantityException(NotEnoughQuantityException ex) {

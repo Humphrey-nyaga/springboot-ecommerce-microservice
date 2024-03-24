@@ -11,6 +11,6 @@ public interface OrderService {
 
     List<OrderResponse> getAllOrders();
 
-    List<OrderResponse> getOrdersBetweenDates(LocalDate startDate, LocalDate endDate);
+    List<OrderResponse> getOrdersByDateRange(LocalDate startDate, LocalDate endDate);
 
 }
