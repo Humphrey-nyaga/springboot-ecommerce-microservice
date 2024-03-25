@@ -14,4 +14,6 @@ public interface InventoryService {
     Boolean checkInventory(List<String> productCodes, List<Integer> productQuantities);
     Boolean reduceInventory(List<String> productCodes, List<Integer> productQuantities);
     void deleteInventoryById(String inventoryId);
+
+    List<InventoryResponse> createInventories(List<InventoryRequest> inventoryRequests);
 }

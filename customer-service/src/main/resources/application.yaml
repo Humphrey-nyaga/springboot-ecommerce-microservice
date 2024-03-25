@@ -1,0 +1,27 @@
+server:
+  port: 0
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+  datasource:
+    url: jdbc:postgresql://localhost:5432/customersdb
+    username: postgres
+    password: generic
+  application:
+    name: customer-service
+  jpa:
+   show-sql: true
+   hibernate:
+    ddl-auto: update
+    
+management:
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: "*"

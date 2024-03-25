@@ -9,7 +9,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,7 +38,7 @@ public class Order {
 
     @Column(
             name = "order_number",
-            unique = true)
+            unique = false)
     private String orderNumber;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
