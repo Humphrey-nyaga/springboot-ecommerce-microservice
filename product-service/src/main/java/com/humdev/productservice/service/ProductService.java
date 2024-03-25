@@ -4,6 +4,7 @@ import com.humdev.productservice.entity.Product;
 import com.humdev.productservice.model.ProductCreateRequest;
 import com.humdev.productservice.model.ProductCreateResponse;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
@@ -15,4 +16,5 @@ public interface ProductService {
     ProductCreateResponse findProductById(Long productId);
 
     void deleteProductById(Long productId);
+    List<BigDecimal> getProductsPrices(List<String> productCodes);
 }

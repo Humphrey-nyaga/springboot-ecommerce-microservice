@@ -7,7 +7,7 @@ import com.humdev.orderservice.model.OrderRequest;
 import com.humdev.orderservice.model.OrderResponse;
 
 public interface OrderService {
-    String createOrder(OrderRequest orderRequest);
+    OrderResponse createOrder(OrderRequest orderRequest);
 
     List<OrderResponse> getAllOrders();
 

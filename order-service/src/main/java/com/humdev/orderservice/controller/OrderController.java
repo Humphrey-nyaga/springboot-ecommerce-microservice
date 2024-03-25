@@ -31,18 +31,19 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    public ApiResponse<String> placeOrder(@RequestBody OrderRequest orderRequest) {
+    public ApiResponse<OrderResponse> placeOrder(@RequestBody OrderRequest orderRequest) {
 
         long startTime = System.currentTimeMillis();
         log.info("::::Order request Start Time::::: {} " + startTime);
-        String orderNumber = orderService.createOrder(orderRequest);
-        ApiResponse<String> response = ApiResponse.<String>builder()
+        OrderResponse orderResponse = orderService.createOrder(orderRequest);
+        ApiResponse<OrderResponse> response = ApiResponse.<OrderResponse>builder()
                 .message("Order placed successfully")
                 .success(true)
                 .itemCount(1)
-                .data(orderNumber)
+                .data(orderResponse)
                 .build();
 
+                
         long stopTime = System.currentTimeMillis();
         log.info("::::Order Stop Time::::: {} " + stopTime);
         log.info("::::Order duration--> request to response Time::::: {} " + (stopTime - startTime));

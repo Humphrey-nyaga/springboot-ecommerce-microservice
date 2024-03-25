@@ -74,6 +74,17 @@
             "mainClass": "com.humdev.configserver.ConfigServerApplication",
             "projectName": "config-server",
             "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CustomerServiceApplication<customer-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.humdev.customerservice.CustomerServiceApplication",
+            "projectName": "customer-service",
+            "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
     ]

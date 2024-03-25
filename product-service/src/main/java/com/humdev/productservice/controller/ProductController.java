@@ -5,6 +5,7 @@ import com.humdev.productservice.model.ApiResponse;
 import com.humdev.productservice.model.ProductCreateRequest;
 import com.humdev.productservice.model.ProductCreateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import com.humdev.productservice.entity.Product;
@@ -12,6 +13,7 @@ import com.humdev.productservice.service.ProductService;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -74,4 +76,22 @@ public class ProductController {
                 .build();
     }
 
+    // getProductsPrices(List<String> productCodes)
+    @GetMapping("/productPrices")
+    @ResponseStatus(code = HttpStatus.OK)
+    public ApiResponse<List<BigDecimal>> getProductsPrices(
+            @RequestParam("productCodes") List<String> productCodes){
+
+        log.info("::::::::::::Products Controller To Get Item Prices:::::::::::::::::::::::");
+
+        List<BigDecimal> productPrices = productService.getProductsPrices(productCodes);
+        log.info("::::::::::::Returned Product Prices::::::::::::::::::::::: " + productPrices);
+
+        ApiResponse<List<BigDecimal>> response = ApiResponse.<List<BigDecimal>>builder()
+                .data(productPrices)
+                .message("Prices retrieved successfully")
+                .success(true)
+                .build();
+        return response;
+    }
 }

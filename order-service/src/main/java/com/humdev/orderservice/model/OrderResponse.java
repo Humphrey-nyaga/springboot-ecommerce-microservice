@@ -1,5 +1,6 @@
 package com.humdev.orderservice.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -19,4 +20,7 @@ public class OrderResponse {
     private LocalDateTime orderTime;
 
     private String orderNumber;
+
+    private BigDecimal orderTotal;
+
 }

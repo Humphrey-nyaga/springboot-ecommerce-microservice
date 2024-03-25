@@ -11,6 +11,53 @@ Content-Type: application/json
 }
 
 ###
+# @CreateProduct
+POST http://localhost:7000/api/v1/products/
+Content-Type: application/json
+
+{
+      "productCode": "MCG002",
+      "price": 1000,
+      "name": "Theme Templates"
+      
+}
+
+###
+# @Create an Inventory
+POST  http://localhost:7000/api/v1/inventory/
+Content-Type: application/json
+
+[
+    {
+        "productCode": "MCC9988",
+        "quantity": 100
+    },
+    {
+        "productCode": "MCG002",
+        "quantity": 50
+    }
+]
+
+
+###
+# @Place order
+POST http://localhost:7000/api/v1/orders/
+Content-Type: application/json
+
+{
+  "orderItems": [
+    {
+      "productCode": "MCG002",
+      "quantity": 45
+    },
+    {
+      "productCode": "MCC9988",
+      "quantity": 98
+    }
+  ]
+}
+
+###
 # @AllOrder
 GET  http://localhost:7000/api/v1/orders/
 Content-Type: application/json
@@ -35,17 +82,6 @@ Content-Type: application/json
 GET  http://localhost:7000/api/v1/orders/filter
 Content-Type: application/json
 
-###
-# @Create an Inventory
-POST  http://localhost:7000/api/v1/inventory/
-Content-Type: application/json
-
-[
-    {
-        "productCode": "MCG890",
-        "quantity": 10
-    }
-]
 
 
 ###
@@ -54,11 +90,6 @@ POST  http://localhost:7000/api/v1/inventory/
 Content-Type: application/json
 
 [
-
-    {
-        "productCode": "MCG002",
-        "quantity": 5
-    },
     {
         "productCode": "MCG003",
         "quantity": 15
@@ -359,16 +390,28 @@ Content-Type: application/json
 {
   "orderItems": [
     {
+      "productCode": "MCG024",
+      "quantity": 30
+    },
+    {
+      "productCode": "MCG025",
+      "quantity": 50
+    },
+    {
+      "productCode": "MCG026",
+      "quantity": 10
+    },
+    {
+      "productCode": "MCG027",
+      "quantity": 23
+    },
+    {
+      "productCode": "MCG028",
+      "quantity": 23
+    },
+    {
       "productCode": "MCG030",
-      "quantity": 3
-    },
-    {
-      "productCode": "MCG031",
-      "quantity": 5
-    },
-    {
-      "productCode": "MCG032",
-      "quantity": 1
+      "quantity": 45
     }
   ]
 }

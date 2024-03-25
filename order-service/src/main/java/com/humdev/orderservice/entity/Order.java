@@ -1,5 +1,6 @@
 package com.humdev.orderservice.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -36,12 +37,13 @@ public class Order {
     @CreationTimestamp
     private LocalDateTime orderTime;
 
-    @Column(
-            name = "order_number",
-            unique = false)
+    @Column(name = "order_number", unique = false)
     private String orderNumber;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
-}
 
+    @Column(name = "order_total")
+    private BigDecimal orderTotal;
+
+}

@@ -1,6 +1,7 @@
 package com.humdev.orderservice.exception;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,6 +15,18 @@ public class ControllerAdvice {
     @ExceptionHandler(InventoryServiceException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public ApiResponse<?> handleInventoryServiceException(Exception ex) {
+
+        ApiResponse<?> response = ApiResponse.builder()
+                .success(false)
+                .message(ex.getMessage())
+                .build();
+
+        return response;
+    }  
+
+    @ExceptionHandler(ProductServiceException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public ApiResponse<?> handleProductServiceException(Exception ex) {
 
         ApiResponse<?> response = ApiResponse.builder()
                 .success(false)
@@ -55,6 +68,19 @@ public class ControllerAdvice {
                 .success(false)
                 .message(ex.getMessage())
                 .data(ex.getUnavailableItems())
+                .build();
+
+        return response;
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ApiResponse<Set<String>> handleProductNotFoundException(ProductNotFoundException ex) {
+
+        ApiResponse<Set<String>> response = ApiResponse.<Set<String>>builder()
+                .success(false)
+                .message(ex.getMessage())
+                .data(ex.getUnavailableProducts())
                 .build();
 
         return response;
