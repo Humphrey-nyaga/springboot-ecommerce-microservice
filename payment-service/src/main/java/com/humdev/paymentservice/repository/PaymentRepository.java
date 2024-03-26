@@ -16,5 +16,5 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     Optional<Payment> findByOrderId(String orderId);
 
-    public List<Payment> findByDateRange(LocalDateTime startDate, LocalDateTime endDate);
+    public List<Payment> findByPaymentDateTimeBetween(LocalDateTime startDate, LocalDateTime endDate);
 }
