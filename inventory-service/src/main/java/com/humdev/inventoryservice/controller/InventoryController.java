@@ -33,14 +33,32 @@ public class InventoryController {
         this.inventoryService = inventoryService;
     }
 
+    // @PostMapping("/")
+    // @ResponseStatus(code = HttpStatus.CREATED)
+    // public ApiResponse<InventoryResponse> createInventory(@RequestBody @Valid
+    // InventoryRequest inventoryRequest) {
+
+    // InventoryResponse newInventory =
+    // inventoryService.createInventory(inventoryRequest);
+    // ApiResponse<InventoryResponse> response =
+    // ApiResponse.<InventoryResponse>builder()
+    // .data(newInventory)
+    // .message("Inventory added successfully")
+    // .success(true)
+    // .build();
+    // return response;
+    // }
+
     @PostMapping("/")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ApiResponse<InventoryResponse> createInventory(@RequestBody @Valid InventoryRequest inventoryRequest) {
-
-        InventoryResponse newInventory = inventoryService.createInventory(inventoryRequest);
-        ApiResponse<InventoryResponse> response = ApiResponse.<InventoryResponse>builder()
-                .data(newInventory)
-                .message("Inventory added successfully")
+    public ApiResponse<List<InventoryResponse>> createInventory(
+            @RequestBody List<@Valid InventoryRequest> inventoryRequests) {
+                
+        List<InventoryResponse> newInventories = inventoryService.createInventories(inventoryRequests);
+        ApiResponse<List<InventoryResponse>> response = ApiResponse.<List<InventoryResponse>>builder()
+                .data(newInventories)
+                .message("Inventories added successfully")
+                .itemCount(newInventories.size())
                 .success(true)
                 .build();
         return response;
@@ -94,12 +112,11 @@ public class InventoryController {
         return response;
     }
 
-
     @DeleteMapping("/delete/{inventoryId}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     public ApiResponse<String> deleteInventoryById(@PathVariable String inventoryId) {
 
-        log.info("::::::::::::::::::Inventory to Delete Id Is: :::::::::::::: {}"  + inventoryId);
+        log.info("::::::::::::::::::Inventory to Delete Id Is: :::::::::::::: {}" + inventoryId);
         inventoryService.deleteInventoryById(inventoryId);
         ApiResponse<String> response = ApiResponse.<String>builder()
                 .message("Inventory Item deleted successfully")

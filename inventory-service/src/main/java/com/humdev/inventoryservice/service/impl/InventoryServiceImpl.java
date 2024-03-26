@@ -7,6 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 public class InventoryServiceImpl implements InventoryService {
 
     private final InventoryRepository inventoryRepository;
+    private final MongoTemplate mongoTemplate;
 
-    public InventoryServiceImpl(InventoryRepository inventoryRepository) {
+    public InventoryServiceImpl(InventoryRepository inventoryRepository, MongoTemplate mongoTemplate) {
         this.inventoryRepository = inventoryRepository;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @Override
@@ -124,6 +127,15 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public void deleteInventoryById(String inventoryId) {
         inventoryRepository.deleteById(inventoryId);
+    }
+
+    @Override
+    public List<InventoryResponse> createInventories(List<InventoryRequest> inventoryRequests) {
+        return mongoTemplate.insert(inventoryRequests
+                .stream()
+                .map(this::mapToInventoryRequestEntity)
+                .toList(), Inventory.class)
+                .stream().map(this::mapToInventoryResponse).collect(Collectors.toList());
     }
 
 }

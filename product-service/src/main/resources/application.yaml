@@ -12,6 +12,7 @@ spring:
     
   application:
     name: product-service
+    
   jpa:
    show-sql: true
    hibernate:

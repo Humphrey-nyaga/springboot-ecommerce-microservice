@@ -1,7 +1,11 @@
 package com.humdev.productservice.service.impl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.humdev.productservice.model.ProductCreateRequest;
 import com.humdev.productservice.model.ProductCreateResponse;
@@ -14,7 +18,10 @@ import com.humdev.productservice.exception.ProductNotFoundException;
 import com.humdev.productservice.repository.ProductRepository;
 import com.humdev.productservice.service.ProductService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -63,6 +70,32 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProductById(Long productId) {
         productRepository.deleteById(productId);
+    }
+
+    @Override
+    public List<BigDecimal> getProductsPrices(List<String> productCodes) {
+        List<BigDecimal> productsPrices = new ArrayList<>();
+        Set<String> unavailableProducts = new HashSet<>();
+
+        for (String productCode : productCodes) {
+
+            Product product = productRepository.findByProductCode(productCode).orElse(null);
+            if (product != null) {
+                productsPrices.add(product.getPrice());
+            } else {
+                unavailableProducts.add(productCode);
+            }
+        }
+        if (unavailableProducts.isEmpty()) {
+            log.info("::::::::::::Service Retrieved Product Prices Successfully ::::::::::::::::::::::: " + productsPrices);
+
+            return productsPrices;
+
+        } else {
+            throw new ProductNotFoundException("The Product(s) with the productcodes given do not exist", unavailableProducts);
+
+        }
+
     }
 
 }

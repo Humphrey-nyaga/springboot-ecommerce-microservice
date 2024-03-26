@@ -10,6 +10,7 @@ import com.humdev.productservice.model.ApiResponse;
 
 @RestControllerAdvice
 public class ControllerAdvice {
+    
     @ExceptionHandler(ProductNotFoundException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public ApiResponse<?> handleProductNotFound(ProductNotFoundException ex) {
@@ -17,8 +18,8 @@ public class ControllerAdvice {
         ApiResponse<?> response = ApiResponse.builder()
                 .success(false)
                 .message(ex.getMessage())
+                .data(ex.getUnavailableProducts() != null ? ex.getUnavailableProducts() : "")
                 .build();
-
         return response;
     }
 

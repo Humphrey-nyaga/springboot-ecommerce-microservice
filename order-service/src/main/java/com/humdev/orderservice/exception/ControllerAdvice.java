@@ -1,6 +1,7 @@
 package com.humdev.orderservice.exception;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,20 +22,69 @@ public class ControllerAdvice {
                 .build();
 
         return response;
+    }  
+
+    @ExceptionHandler(ProductServiceException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public ApiResponse<?> handleProductServiceException(Exception ex) {
+
+        ApiResponse<?> response = ApiResponse.builder()
+                .success(false)
+                .message(ex.getMessage())
+                .build();
+
+        return response;
     }
 
-   @ExceptionHandler(NotEnoughQuantityException.class)
+    @ExceptionHandler(InvalidStartAndEndDatesException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ApiResponse<?> handleInvalidStartAndEndDatesException(InvalidStartAndEndDatesException ex) {
+
+        ApiResponse<?> response = ApiResponse.builder()
+                .success(false)
+                .message(ex.getMessage())
+                .build();
+
+        return response;
+    }
+
+    @ExceptionHandler(MissingDateRangeException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ApiResponse<?> handleInvalidStartAndEndDatesException(MissingDateRangeException ex) {
+
+        ApiResponse<?> response = ApiResponse.builder()
+                .success(false)
+                .message(ex.getMessage())
+                .build();
+
+        return response;
+    }
+
+    @ExceptionHandler(NotEnoughQuantityException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ApiResponse<Map<String, Integer>> notEnoughQuantityException(NotEnoughQuantityException ex) {
 
-        ApiResponse<Map<String, Integer>> response = ApiResponse.<Map<String, Integer>> builder()
+        ApiResponse<Map<String, Integer>> response = ApiResponse.<Map<String, Integer>>builder()
                 .success(false)
                 .message(ex.getMessage())
                 .data(ex.getUnavailableItems())
                 .build();
 
         return response;
-    } 
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ApiResponse<Set<String>> handleProductNotFoundException(ProductNotFoundException ex) {
+
+        ApiResponse<Set<String>> response = ApiResponse.<Set<String>>builder()
+                .success(false)
+                .message(ex.getMessage())
+                .data(ex.getUnavailableProducts())
+                .build();
+
+        return response;
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
