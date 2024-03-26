@@ -14,7 +14,7 @@ import com.humdev.orderservice.model.ApiResponse;
 public class ControllerAdvice {
     @ExceptionHandler(InventoryServiceException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ApiResponse<?> handleInventoryServiceException(Exception ex) {
+    public ApiResponse<?> handleInventoryServiceException(InventoryServiceException ex) {
 
         ApiResponse<?> response = ApiResponse.builder()
                 .success(false)
@@ -26,7 +26,7 @@ public class ControllerAdvice {
 
     @ExceptionHandler(ProductServiceException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ApiResponse<?> handleProductServiceException(Exception ex) {
+    public ApiResponse<?> handleProductServiceException(ProductServiceException ex) {
 
         ApiResponse<?> response = ApiResponse.builder()
                 .success(false)
@@ -100,7 +100,7 @@ public class ControllerAdvice {
 
     @ExceptionHandler(OrderServiceException.class)
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiResponse<?> handleOrderServiceException(Exception ex) {
+    public ApiResponse<?> handleOrderServiceException(OrderServiceException ex) {
 
         ApiResponse<?> response = ApiResponse.builder()
                 .success(false)
