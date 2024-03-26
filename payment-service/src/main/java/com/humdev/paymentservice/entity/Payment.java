@@ -45,7 +45,7 @@ public class Payment {
 
     @Column(name = "payment_date")
     @CreationTimestamp
-    private LocalDateTime paymentDateTime;
+    private LocalDateTime paymentDate;
 
     @Column(name = "order_id")
     @NotNull @NotBlank

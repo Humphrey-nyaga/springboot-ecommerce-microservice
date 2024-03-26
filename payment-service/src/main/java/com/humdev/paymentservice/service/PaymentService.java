@@ -1,8 +1,8 @@
 package com.humdev.paymentservice.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
 
 import com.humdev.paymentservice.model.PaymentRequestDto;
 import com.humdev.paymentservice.model.PaymentResponseDto;
@@ -17,6 +17,6 @@ public interface PaymentService {
 
     public PaymentResponseDto findPaymentById(Long id);
 
-    public List<PaymentResponseDto> findPaymentsByDateRange(Long id);
+    public List<PaymentResponseDto> findPaymentsByDateRange(LocalDate startDate, LocalDate endDate);
 
 }
