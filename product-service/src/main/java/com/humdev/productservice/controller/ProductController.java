@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.humdev.productservice.entity.Product;
 import com.humdev.productservice.service.ProductService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
@@ -90,6 +91,22 @@ public class ProductController {
         ApiResponse<List<BigDecimal>> response = ApiResponse.<List<BigDecimal>>builder()
                 .data(productPrices)
                 .message("Prices retrieved successfully")
+                .success(true)
+                .build();
+        return response;
+    }
+
+    // TODO Batch uploads inserting one value at a time. Batch insert needs to be enabled in properties
+    @PostMapping("/batchUpload")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public ApiResponse<List<ProductCreateResponse>> createInventory(
+            @RequestBody List<@Valid ProductCreateRequest> productsCreateRequests) {
+                
+        List<ProductCreateResponse> newProducts = productService.createProductsInBatch(productsCreateRequests);
+        ApiResponse<List<ProductCreateResponse>> response = ApiResponse.<List<ProductCreateResponse>>builder()
+                .data(newProducts)
+                .message("Products added successfully")
+                .itemCount(newProducts.size())
                 .success(true)
                 .build();
         return response;

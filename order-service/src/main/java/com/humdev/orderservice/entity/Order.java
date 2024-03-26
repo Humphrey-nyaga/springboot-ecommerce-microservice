@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,5 +46,11 @@ public class Order {
 
     @Column(name = "order_total")
     private BigDecimal orderTotal;
+
+
+    //  @PrePersist
+    // protected void onCreate() {
+    //     setOrderNumber(java.util.UUID.randomUUID().toString());
+    // }
 
 }

@@ -1,19 +1,10 @@
 server:
   port: 6000
-  error:
-    include-stacktrace: never
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/productsdb
-    username: root
-    password: root
+  profiles:
+    active: qa, default
   config:
-    import: optional:configserver:http://localhost:8888
-    
+    import: optional:configserver:http://localhost:8888  
   application:
     name: product-service
-    
-  jpa:
-   show-sql: true
-   hibernate:
-    ddl-auto: update
+

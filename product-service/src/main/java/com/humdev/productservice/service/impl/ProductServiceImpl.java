@@ -87,15 +87,29 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         if (unavailableProducts.isEmpty()) {
-            log.info("::::::::::::Service Retrieved Product Prices Successfully ::::::::::::::::::::::: " + productsPrices);
+            log.info("::::::::::::Service Retrieved Product Prices Successfully ::::::::::::::::::::::: "
+                    + productsPrices);
 
             return productsPrices;
 
         } else {
-            throw new ProductNotFoundException("The Product(s) with the productcodes given do not exist", unavailableProducts);
+            throw new ProductNotFoundException("The Product(s) with the productcodes given do not exist",
+                    unavailableProducts);
 
         }
 
+    }
+
+    @Override
+    public List<ProductCreateResponse> createProductsInBatch(List<ProductCreateRequest> productsToCreateList) {
+
+        List<Product> newProducts = productRepository.saveAll(productsToCreateList.stream()
+                .map(this::mapProductRequestToProduct)
+                .toList());
+
+        return newProducts.stream()
+                .map(this::mapProductToProductResponse)
+                .toList();
     }
 
 }

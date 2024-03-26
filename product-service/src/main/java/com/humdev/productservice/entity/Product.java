@@ -9,11 +9,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Min;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.type.TrueFalseConverter;
+import org.springframework.lang.NonNull;
 
 @Entity
 @Table(name = "products",
@@ -32,12 +35,15 @@ public class Product {
     private Long id;
 
     @Column(name = "product_name")
+    @NonNull
     private String name;
 
     @Column(name = "product_code")
+    @NonNull
     private String productCode;
 
     @Column(name = "product_price")
+    @Min(value = 1, message = "Product Price cannot be less than 1")
     private BigDecimal price;
 
 }

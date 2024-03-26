@@ -72,6 +72,8 @@ public class OrderServiceImpl implements OrderService {
 
             Order order = new Order();
             order.setOrderNumber(generateOrderID.generateOrderUUIDString());
+            
+            log.info(":::::::::::::order uuid::::::::::: " + order.getOrderNumber());
 
             // reduce the inventory first
             ApiResponse<?> inventoryReduced = this.reduceItemsInventory(productCodes, productQuantity);

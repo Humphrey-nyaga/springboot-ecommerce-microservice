@@ -1,26 +1,7 @@
 server:
   port: 6002
 spring:
+  profiles:
+    active: development, default
   config:
     import: optional:configserver:http://localhost:8888
-  data:
-    mongodb: 
-        # uri: mongodb://root:generic@localhost:27017/inventorydb?authSource=admin
-        host: localhost
-        port: 27017
-        username: root
-        password: generic
-        authentication-database: admin
-        database: inventorydb
-        
-  application:
-    name: inventory-service
-
-logging:
-  level:
-    org:
-      springframework:
-        data:
-          mongodb:
-            core:
-              MongoTemplate: DEBUG
