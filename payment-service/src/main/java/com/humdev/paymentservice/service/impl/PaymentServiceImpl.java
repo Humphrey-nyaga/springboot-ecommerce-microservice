@@ -34,7 +34,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponseDto findPaymentByOrderId(String orderId) {
         Payment payment = paymentRepository.findByOrderId(orderId).orElseThrow(
-                () -> new PaymentNotFoundException("Payment with order id " + orderId + " does not exists."));
+                () -> new PaymentNotFoundException("Payment for order id " + orderId + " does not exists."));
         return this.mapToPaymentResponseDto(payment);
     }
 
@@ -69,7 +69,8 @@ public class PaymentServiceImpl implements PaymentService {
     public List<PaymentResponseDto> findPaymentsByDateRange(LocalDate startDate, LocalDate endDate) {
 
         if (startDate == null && endDate == null) {
-            throw new MissingDateRangeException("At least one of startDate or endDate must be provided to get a payment");
+            throw new MissingDateRangeException(
+                    "At least one of startDate or endDate must be provided to get a payment");
         }
         if (startDate != null && endDate != null) {
             return paymentRepository
@@ -91,8 +92,16 @@ public class PaymentServiceImpl implements PaymentService {
                     .toList();
 
         } else {
-            throw new MissingDateRangeException("At least one of startDate or endDate must be provided to get a payment");
+            throw new MissingDateRangeException(
+                    "At least one of startDate or endDate must be provided to get a payment");
         }
+    }
+
+    @Override
+    public List<PaymentResponseDto> findAllPayments() {
+        return paymentRepository.findAll().stream()
+                .map(this::mapToPaymentResponseDto)
+                .toList();
     }
 
 }

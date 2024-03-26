@@ -19,4 +19,6 @@ public interface PaymentService {
 
     public List<PaymentResponseDto> findPaymentsByDateRange(LocalDate startDate, LocalDate endDate);
 
+    public List<PaymentResponseDto> findAllPayments();
+
 }
