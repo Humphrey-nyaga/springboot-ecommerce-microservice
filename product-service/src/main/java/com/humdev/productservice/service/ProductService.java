@@ -10,11 +10,14 @@ import java.util.List;
 public interface ProductService {
 
     ProductCreateResponse createProduct(ProductCreateRequest productCreateRequest);
+   
+    List<ProductCreateResponse> createProductsInBatch(List<ProductCreateRequest> productsToCreateList);
 
     List<Product> findAllProducts();
 
     ProductCreateResponse findProductById(Long productId);
 
     void deleteProductById(Long productId);
+
     List<BigDecimal> getProductsPrices(List<String> productCodes);
 }

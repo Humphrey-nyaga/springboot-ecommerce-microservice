@@ -415,3 +415,266 @@ Content-Type: application/json
     }
   ]
 }
+
+###
+# @Create products in batch
+POST  http://localhost:6000/api/v1/products/batchUpload
+Content-Type: application/json
+
+[
+    {
+        "productCode": "MCG003",
+        "name": "T-shirt",
+        "price": 15
+    },
+    {
+        "productCode": "MCG004",
+        "name": "Jeans",
+        "price": 20
+    },
+    {
+        "productCode": "MCG005",
+        "name": "Sneakers",
+        "price": 25
+    },
+    {
+        "productCode": "MCG006",
+        "name": "Backpack",
+        "price": 30
+    },
+    {
+        "productCode": "MCG007",
+        "name": "Watch",
+        "price": 35
+    },
+    {
+        "productCode": "MCG008",
+        "name": "Sunglasses",
+        "price": 40
+    },
+    {
+        "productCode": "MCG009",
+        "name": "Hoodie",
+        "price": 45
+    },
+    {
+        "productCode": "MCG010",
+        "name": "Sweatpants",
+        "price": 50
+    },
+    {
+        "productCode": "MCG011",
+        "name": "Running Shoes",
+        "price": 55
+    },
+    {
+        "productCode": "MCG012",
+        "name": "Jacket",
+        "price": 60
+    },
+    {
+        "productCode": "MCG013",
+        "name": "Hat",
+        "price": 65
+    },
+    {
+        "productCode": "MCG014",
+        "name": "Gloves",
+        "price": 70
+    },
+    {
+        "productCode": "MCG015",
+        "name": "Scarf",
+        "price": 75
+    },
+    {
+        "productCode": "MCG016",
+        "name": "Boots",
+        "price": 80
+    },
+    {
+        "productCode": "MCG017",
+        "name": "Belt",
+        "price": 85
+    },
+    {
+        "productCode": "MCG018",
+        "name": "Dress",
+        "price": 90
+    },
+    {
+        "productCode": "MCG019",
+        "name": "Skirt",
+        "price": 95
+    },
+    {
+        "productCode": "MCG020",
+        "name": "Blouse",
+        "price": 100
+    },
+    {
+        "productCode": "MCG021",
+        "name": "Suit",
+        "price": 105
+    },
+    {
+        "productCode": "MCG022",
+        "name": "Tie",
+        "price": 110
+    },
+    {
+        "productCode": "MCG023",
+        "name": "Briefcase",
+        "price": 115
+    },
+    {
+        "productCode": "MCG024",
+        "name": "Wallet",
+        "price": 120
+    },
+    {
+        "productCode": "MCG025",
+        "name": "Purse",
+        "price": 125
+    },
+    {
+        "productCode": "MCG026",
+        "name": "Earrings",
+        "price": 130
+    },
+    {
+        "productCode": "MCG027",
+        "name": "Necklace",
+        "price": 135
+    },
+    {
+        "productCode": "MCG028",
+        "name": "Bracelet",
+        "price": 140
+    },
+    {
+        "productCode": "MCG029",
+        "name": "Ring",
+        "price": 145
+    },
+    {
+        "productCode": "MCG030",
+        "name": "Cufflinks",
+        "price": 150
+    },
+    {
+        "productCode": "MCG031",
+        "name": "Socks",
+        "price": 155
+    },
+    {
+        "productCode": "MCG032",
+        "name": "Underwear",
+        "price": 160
+    },
+    {
+        "productCode": "MCG033",
+        "name": "Sleepwear",
+        "price": 165
+    },
+    {
+        "productCode": "MCG034",
+        "name": "Swimsuit",
+        "price": 170
+    },
+    {
+        "productCode": "MCG035",
+        "name": "Bathing Cap",
+        "price": 175
+    },
+    {
+        "productCode": "MCG036",
+        "name": "Towel",
+        "price": 180
+    },
+    {
+        "productCode": "MCG037",
+        "name": "Sunscreen",
+        "price": 185
+    },
+    {
+        "productCode": "MCG038",
+        "name": "Beach Bag",
+        "price": 190
+    },
+    {
+        "productCode": "MCG039",
+        "name": "Flip Flops",
+        "price": 195
+    },
+    {
+        "productCode": "MCG040",
+        "name": "Beach Chair",
+        "price": 200
+    },
+    {
+        "productCode": "MCG041",
+        "name": "Cooler",
+        "price": 205
+    },
+    {
+        "productCode": "MCG042",
+        "name": "Beach Umbrella",
+        "price": 210
+    },
+    {
+        "productCode": "MCG043",
+        "name": "Frisbee",
+        "price": 215
+    },
+    {
+        "productCode": "MCG044",
+        "name": "Beach Ball",
+        "price": 220
+    },
+    {
+        "productCode": "MCG045",
+        "name": "Swim Goggles",
+        "price": 225
+    },
+    {
+        "productCode": "MCG046",
+        "name": "Sandals",
+        "price": 230
+    },
+    {
+        "productCode": "MCG047",
+        "name": "Sun Hat",
+        "price": 235
+    },
+    {
+        "productCode": "MCG048",
+        "name": "Inflatable Mattress",
+        "price": 240
+    },
+    {
+        "productCode": "MCG049",
+        "name": "Beach Towel",
+        "price": 245
+    },
+    {
+        "productCode": "MCG050",
+        "name": "Beach Bag",
+        "price": 250
+    },
+    {
+        "productCode": "MCG051",
+        "name": "Beach Chair",
+        "price": 255
+    },
+    {
+        "productCode": "MCG052",
+        "name": "Cooler",
+        "price": 260
+    },
+    {
+        "productCode": "MCG053",
+        "name": "Beach Umbrella",
+        "price": 265
+    }
+]
