@@ -80,6 +80,7 @@ public class OrderServiceImpl implements OrderService {
             log.info("::::::Inventory Reduced ::::::::::: " + order.getOrderNumber());
 
             // Calculate order total
+            // TODO -> We dont want to be having total stored in the db they need to be tabulated from the db instead using a query
             List<Double> orderItemsPricesData = (List<Double>) orderItemsPrices.getData();
             List<BigDecimal> productPrices = orderItemsPricesData.stream()
                     .map(BigDecimal::valueOf)
