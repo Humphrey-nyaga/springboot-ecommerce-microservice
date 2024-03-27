@@ -1,13 +1,19 @@
 # springboot-ecommerce-microservice
 
-## Services 
-### 1. Discovery Service
+## Services and their respective Swagger ui endpoints
+### 1. Discovery Service 
 ### 2. Config Service
 ### 3. Api-Gateway Service
 ### 4. Products Service
+    http://localhost:7000/products/swagger-ui.html
 ### 5 .Orders Service
+    http://localhost:7000/orders/swagger-ui.html
 ### 6. Inventory Service
+    http://localhost:7000/inventory/swagger-ui.html
+
 ### 7. Payments Service
+    http://localhost:7000/payments/swagger-ui.html
+
 
 ## Tech Stack
  ### Development 
