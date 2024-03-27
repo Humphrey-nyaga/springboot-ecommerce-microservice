@@ -1,27 +1,40 @@
 package com.humdev.paymentservice.service.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.humdev.paymentservice.entity.Payment;
+import com.humdev.paymentservice.entity.PaymentStatus;
 import com.humdev.paymentservice.exception.MissingDateRangeException;
 import com.humdev.paymentservice.exception.PaymentNotFoundException;
+import com.humdev.paymentservice.exception.PaymentServiceException;
+import com.humdev.paymentservice.model.ApiResponse;
 import com.humdev.paymentservice.model.PaymentRequestDto;
 import com.humdev.paymentservice.model.PaymentResponseDto;
 import com.humdev.paymentservice.repository.PaymentRepository;
 import com.humdev.paymentservice.service.PaymentService;
 
+import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
+
 @Service
+@Slf4j
 public class PaymentServiceImpl implements PaymentService {
 
     public final PaymentRepository paymentRepository;
+    private final WebClient.Builder webClient;
 
-    public PaymentServiceImpl(PaymentRepository paymentRepository) {
+    public PaymentServiceImpl(PaymentRepository paymentRepository, WebClient.Builder webClient) {
         this.paymentRepository = paymentRepository;
+        this.webClient = webClient;
     }
 
     @Override
@@ -46,11 +59,54 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentResponseDto savePayment(PaymentRequestDto PaymentRequestDto) {
+    public PaymentResponseDto savePayment(PaymentRequestDto paymentRequestDto) {
 
         // TODO logic to validate order, amounts etc
-        Payment newPayment = paymentRepository.save(this.mapToPaymentEntity(PaymentRequestDto));
-        return this.mapToPaymentResponseDto(newPayment);
+        // TODO -> Exceptions from this operation need to be handled more elegantly to return specific message to user 
+        Boolean isValidOrder = this.validateOrderAmount(paymentRequestDto.getOrderId(), paymentRequestDto.getAmount());
+        
+        if (isValidOrder) {
+
+            Payment newPayment = paymentRepository.save(this.mapToPaymentEntity(paymentRequestDto));
+            
+            // get new payment and set as completed then save again --- 
+            newPayment.setPaymentStatus(PaymentStatus.COMPLETED);
+            paymentRepository.save(newPayment);
+            return this.mapToPaymentResponseDto(newPayment);
+
+        } else {
+
+            throw new PaymentServiceException(
+                    "Payment could not be completed for order " + paymentRequestDto.getOrderId());
+        }
+    }
+
+    private Boolean validateOrderAmount(String orderNumber, BigDecimal orderAmount) {
+
+        ApiResponse<?> isValidOrder = webClient.build().get()
+                .uri("http://ORDER-SERVICE/api/v1/orders/validate",
+                        uriBuilder -> uriBuilder
+                                .queryParam("orderNumber", orderNumber)
+                                .queryParam("orderAmount", orderAmount)
+                                .build())
+
+                .retrieve()
+                .onStatus(HttpStatusCode::isError,
+                        clientResponse -> Mono
+                                .error(new PaymentServiceException("An error occurred while processing order payment")))
+                .bodyToMono(new ParameterizedTypeReference<ApiResponse<?>>() {
+                })
+                .block();
+        log.info("::::::::::::Returning order number and amount validations:::::::::::::::::::::::");
+
+        if (isValidOrder.isSuccess()) {
+            return true;
+
+        } else {
+            // todo: check if all errors from order service are handled well
+            throw new PaymentServiceException(isValidOrder.getMessage());
+        }
+
     }
 
     private PaymentResponseDto mapToPaymentResponseDto(Payment payment) {

@@ -8,11 +8,12 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.humdev.productservice.model.ProductCreateRequest;
-import com.humdev.productservice.model.ProductCreateResponse;
+import com.humdev.productservice.model.ProductResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.humdev.productservice.entity.Category;
 import com.humdev.productservice.entity.Product;
 import com.humdev.productservice.exception.ProductNotFoundException;
 import com.humdev.productservice.repository.ProductRepository;
@@ -31,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductCreateResponse createProduct(ProductCreateRequest productCreateRequest) {
+    public ProductResponse createProduct(ProductCreateRequest productCreateRequest) {
         Product product = productRepository.save(this.mapProductRequestToProduct(productCreateRequest));
         System.out.println(":::::::::::::::::Product is-> " + product);
         return mapProductToProductResponse(product);
@@ -41,24 +42,32 @@ public class ProductServiceImpl implements ProductService {
     private Product mapProductRequestToProduct(ProductCreateRequest productCreateRequest) {
         Product product = new Product();
         BeanUtils.copyProperties(productCreateRequest, product);
+
+        Category category = new Category();
+        category.setId(productCreateRequest.getCategoryId());
+        product.setCategory(category);
         System.out.println(":::::::::::::::::Product is-> " + product);
 
         return product;
     }
 
-    private ProductCreateResponse mapProductToProductResponse(Product product) {
-        ProductCreateResponse productCreateResponse = new ProductCreateResponse();
-        BeanUtils.copyProperties(product, productCreateResponse);
-        return productCreateResponse;
+    private ProductResponse mapProductToProductResponse(Product product) {
+        ProductResponse productResponse = new ProductResponse();
+        BeanUtils.copyProperties(product, productResponse);
+        if (product.getCategory() != null) {
+            productResponse.setCategoryId(product.getCategory().getId());
+        }
+        return productResponse;
     }
 
     @Override
-    public List<Product> findAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> findAllProducts() {
+        return productRepository.findAll().stream()
+        .map(this::mapProductToProductResponse).toList();
     }
 
     @Override
-    public ProductCreateResponse findProductById(Long id) {
+    public ProductResponse findProductById(Long id) {
         Optional<Product> foundProduct = productRepository.findById(id);
         if (foundProduct.isPresent()) {
             return mapProductToProductResponse(foundProduct.get());
@@ -101,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductCreateResponse> createProductsInBatch(List<ProductCreateRequest> productsToCreateList) {
+    public List<ProductResponse> createProductsInBatch(List<ProductCreateRequest> productsToCreateList) {
 
         List<Product> newProducts = productRepository.saveAll(productsToCreateList.stream()
                 .map(this::mapProductRequestToProduct)

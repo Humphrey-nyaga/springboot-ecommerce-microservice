@@ -2,20 +2,20 @@ package com.humdev.productservice.service;
 
 import com.humdev.productservice.entity.Product;
 import com.humdev.productservice.model.ProductCreateRequest;
-import com.humdev.productservice.model.ProductCreateResponse;
+import com.humdev.productservice.model.ProductResponse;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
 
-    ProductCreateResponse createProduct(ProductCreateRequest productCreateRequest);
+    ProductResponse createProduct(ProductCreateRequest productCreateRequest);
    
-    List<ProductCreateResponse> createProductsInBatch(List<ProductCreateRequest> productsToCreateList);
+    List<ProductResponse> createProductsInBatch(List<ProductCreateRequest> productsToCreateList);
 
-    List<Product> findAllProducts();
+    List<ProductResponse> findAllProducts();
 
-    ProductCreateResponse findProductById(Long productId);
+    ProductResponse findProductById(Long productId);
 
     void deleteProductById(Long productId);
 

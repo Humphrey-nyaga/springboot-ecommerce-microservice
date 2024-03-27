@@ -12,7 +12,7 @@ Content-Type: application/json
 
 ###
 # @CreateProduct
-POST http://localhost:7000/api/v1/products/
+POST http://localhost:6000/api/v1/products/
 Content-Type: application/json
 
 {
@@ -58,6 +58,19 @@ Content-Type: application/json
 }
 
 ###
+# @Make Order payment
+POST http://localhost:7000/api/v1/payments/process?orderId=ORD-78aadb06-4a33-40fe-81dc-90df7fd843dd-0
+Content-Type: application/json
+
+    {
+      "orderId": "ORD-78aadb06-4a33-40fe-81dc-90df7fd843dd-0",
+      "paymentMethod": "MOBILE_MONEY",
+      "paymentProvider": "M-PESA",
+      "amount": 147000.00
+    }
+
+
+###
 # @AllOrder
 GET  http://localhost:7000/api/v1/orders/
 Content-Type: application/json
@@ -79,7 +92,7 @@ Content-Type: application/json
 
 ###
 # @AllOrder after a certain date // returns an error..one value must be present
-GET  http://localhost:7000/api/v1/orders/filter
+GET  http://localhost:7000/api/v1/orders/
 Content-Type: application/json
 
 
@@ -90,289 +103,28 @@ POST  http://localhost:7000/api/v1/inventory/
 Content-Type: application/json
 
 [
-    {
-        "productCode": "MCG003",
-        "quantity": 15
-    },
-    {
-        "productCode": "MCG004",
-        "quantity": 20
-    },
-    {
-        "productCode": "MCG005",
-        "quantity": 25
-    },
-    {
-        "productCode": "MCG006",
-        "quantity": 30
-    },
-    {
-        "productCode": "MCG007",
-        "quantity": 35
-    },
-    {
-        "productCode": "MCG008",
-        "quantity": 40
-    },
-    {
-        "productCode": "MCG009",
-        "quantity": 45
-    },
-    {
-        "productCode": "MCG010",
-        "quantity": 50
-    },
-    {
-        "productCode": "MCG011",
-        "quantity": 55
-    },
-    {
-        "productCode": "MCG012",
-        "quantity": 60
-    },
-    {
-        "productCode": "MCG013",
-        "quantity": 65
-    },
-    {
-        "productCode": "MCG014",
-        "quantity": 70
-    },
-    {
-        "productCode": "MCG015",
-        "quantity": 75
-    },
-    {
-        "productCode": "MCG016",
-        "quantity": 80
-    },
-    {
-        "productCode": "MCG017",
-        "quantity": 85
-    },
-    {
-        "productCode": "MCG018",
-        "quantity": 90
-    },
-    {
-        "productCode": "MCG019",
-        "quantity": 95
-    },
-    {
-        "productCode": "MCG020",
-        "quantity": 100
-    },
-    {
-        "productCode": "MCG021",
-        "quantity": 105
-    },
-    {
-        "productCode": "MCG022",
-        "quantity": 110
-    },
-    {
-        "productCode": "MCG023",
-        "quantity": 115
-    },
-    {
-        "productCode": "MCG024",
-        "quantity": 120
-    },
-    {
-        "productCode": "MCG025",
-        "quantity": 125
-    },
-    {
-        "productCode": "MCG026",
-        "quantity": 130
-    },
-    {
-        "productCode": "MCG027",
-        "quantity": 135
-    },
-    {
-        "productCode": "MCG028",
-        "quantity": 140
-    },
-    {
-        "productCode": "MCG029",
-        "quantity": 145
-    },
-    {
-        "productCode": "MCG030",
-        "quantity": 150
-    },
-    {
-        "productCode": "MCG031",
-        "quantity": 155
-    },
-    {
-        "productCode": "MCG032",
-        "quantity": 160
-    },
-    {
-        "productCode": "MCG033",
-        "quantity": 165
-    },
-    {
-        "productCode": "MCG034",
-        "quantity": 170
-    },
-    {
-        "productCode": "MCG035",
-        "quantity": 175
-    },
-    {
-        "productCode": "MCG036",
-        "quantity": 180
-    },
-    {
-        "productCode": "MCG037",
-        "quantity": 185
-    },
-    {
-        "productCode": "MCG038",
-        "quantity": 190
-    },
-    {
-        "productCode": "MCG039",
-        "quantity": 195
-    },
-    {
-        "productCode": "MCG040",
-        "quantity": 200
-    },
-    {
-        "productCode": "MCG041",
-        "quantity": 205
-    },
-    {
-        "productCode": "MCG042",
-        "quantity": 210
-    },
-    {
-        "productCode": "MCG043",
-        "quantity": 215
-    },
-    {
-        "productCode": "MCG044",
-        "quantity": 220
-    },
-    {
-        "productCode": "MCG045",
-        "quantity": 225
-    },
-    {
-        "productCode": "MCG046",
-        "quantity": 230
-    },
-    {
-        "productCode": "MCG047",
-        "quantity": 235
-    },
-    {
-        "productCode": "MCG048",
-        "quantity": 240
-    },
-    {
-        "productCode": "MCG049",
-        "quantity": 245
-    },
-    {
-        "productCode": "MCG050",
-        "quantity": 250
-    },
-    {
-        "productCode": "MCG051",
-        "quantity": 255
-    },
-    {
-        "productCode": "MCG052",
-        "quantity": 260
-    },
-    {
-        "productCode": "MCG053",
-        "quantity": 265
-    },
-    {
-        "productCode": "MCG054",
-        "quantity": 270
-    },
-    {
-        "productCode": "MCG055",
-        "quantity": 275
-    },
-    {
-        "productCode": "MCG056",
-        "quantity": 280
-    },
-    {
-        "productCode": "MCG057",
-        "quantity": 285
-    },
-    {
-        "productCode": "MCG058",
-        "quantity": 290
-    },
-    {
-        "productCode": "MCG059",
-        "quantity": 295
-    },
-    {
-        "productCode": "MCG060",
-        "quantity": 300
-    },
-    {
-        "productCode": "MCG061",
-        "quantity": 305
-    },
-    {
-        "productCode": "MCG062",
-        "quantity": 310
-    },
-    {
-        "productCode": "MCG063",
-        "quantity": 315
-    },
-    {
-        "productCode": "MCG064",
-        "quantity": 320
-    },
-    {
-        "productCode": "MCG065",
-        "quantity": 325
-    },
-    {
-        "productCode": "MCG066",
-        "quantity": 330
-    },
-    {
-        "productCode": "MCG067",
-        "quantity": 335
-    },
-    {
-        "productCode": "MCG068",
-        "quantity": 340
-    },
-    {
-        "productCode": "MCG069",
-        "quantity": 345
-    },
-    {
-        "productCode": "MCG070",
-        "quantity": 350
-    },
-    {
-        "productCode": "MCG071",
-        "quantity": 355
-    }
-  ]
+  { "productCode": "DELL-100", "quantity": 1000 },
+  { "productCode": "HP-100", "quantity": 1000 },
+  { "productCode": "GPX-100", "quantity": 1000 },
+  { "productCode": "SLW-100", "quantity": 1000 },
+  { "productCode": "SLW-200", "quantity": 500 },
+  { "productCode": "SLW-300", "quantity": 700 },
+  { "productCode": "SLW-108", "quantity": 1200 },
+  { "productCode": "SLW-110", "quantity": 1900 }
+]
 
 
 
-###
-# @AllInventory
-GET  http://localhost:7000/api/v1/inventory/
+### @AllInventory
+GET  http://localhost:6002/api/v1/inventory/
+Content-Type: application/json
+### @AllInventory
+GET  http://localhost:7000/api/v1/payments/
+Content-Type: application/json
+
+
+### @AllInventory
+GET  http://localhost:6000/swagger-ui.html
 Content-Type: application/json
 
 
@@ -390,28 +142,24 @@ Content-Type: application/json
 {
   "orderItems": [
     {
-      "productCode": "MCG024",
-      "quantity": 30
+      "productCode": "DELL-100",
+      "quantity": 5
     },
     {
-      "productCode": "MCG025",
-      "quantity": 50
+      "productCode": "HP-100",
+      "quantity": 6
     },
     {
-      "productCode": "MCG026",
-      "quantity": 10
+      "productCode": "GPX-100",
+      "quantity": 5
     },
     {
-      "productCode": "MCG027",
-      "quantity": 23
+      "productCode": "SLW-200",
+      "quantity": 3
     },
     {
-      "productCode": "MCG028",
-      "quantity": 23
-    },
-    {
-      "productCode": "MCG030",
-      "quantity": 45
+      "productCode": "SLW-300",
+      "quantity": 5
     }
   ]
 }

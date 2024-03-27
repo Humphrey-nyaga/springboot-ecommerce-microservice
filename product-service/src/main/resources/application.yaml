@@ -4,7 +4,19 @@ spring:
   profiles:
     active: qa, default
   config:
-    import: optional:configserver:http://localhost:8888  
+    import: optional:configserver:http://localhost:8888
   application:
     name: product-service
 
+openapi:
+  service:
+    title: Products-service RestApiDocs
+    version: 1.0.0
+    url: http://localhost:7000
+
+springdoc:
+  api-docs:
+    path: /products/v3/api-docs
+  swagger-ui:
+    path: /products/swagger-ui.html
+    operationsSorter: method

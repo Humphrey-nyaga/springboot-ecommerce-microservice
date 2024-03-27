@@ -53,7 +53,7 @@ public class InventoryController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public ApiResponse<List<InventoryResponse>> createInventory(
             @RequestBody List<@Valid InventoryRequest> inventoryRequests) {
-                
+                 log.info("::::::::::::Inventory Controller to create inventories called:::::::::::::::::::::::");       
         List<InventoryResponse> newInventories = inventoryService.createInventories(inventoryRequests);
         ApiResponse<List<InventoryResponse>> response = ApiResponse.<List<InventoryResponse>>builder()
                 .data(newInventories)

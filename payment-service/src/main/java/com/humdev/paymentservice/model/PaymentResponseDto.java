@@ -6,19 +6,27 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.humdev.paymentservice.entity.PaymentMethod;
 import com.humdev.paymentservice.entity.PaymentStatus;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class PaymentResponseDto {
 
     private String paymentCode;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime paymentDateTime;
+    private LocalDateTime paymentDate;
 
     private String orderId;
 
@@ -26,5 +34,6 @@ public class PaymentResponseDto {
 
     private BigDecimal amount;
 
+    @JsonProperty("status")
     private PaymentStatus paymentStatus;
 }

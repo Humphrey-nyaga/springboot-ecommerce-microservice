@@ -11,7 +11,6 @@ import com.humdev.paymentservice.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,20 +20,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-@RequestMapping("Api/v1/payments")
+@RequestMapping("api/v1/payments")
 @Slf4j
 public class PaymentController {
 
-    private final PaymentService paymentservice;
+    private final PaymentService paymentService;
 
-    public PaymentController(PaymentService paymentservice) {
-        this.paymentservice = paymentservice;
+    public PaymentController(PaymentService paymentService) {
+        this.paymentService = paymentService;
     }
 
     @PostMapping("/order/{orderId}")
     public ApiResponse<PaymentResponseDto> filterPaymentByOrderId(@PathVariable String orderId) {
 
-        PaymentResponseDto paymentResponseDto = paymentservice.findPaymentByOrderId(orderId);
+        PaymentResponseDto paymentResponseDto = paymentService.findPaymentByOrderId(orderId);
         ApiResponse<PaymentResponseDto> response = ApiResponse.<PaymentResponseDto>builder()
                 .message("Payment retrieved successfully")
                 .success(true)
@@ -48,7 +47,7 @@ public class PaymentController {
     @PostMapping("/paymentCode/{paymentCode}")
     public ApiResponse<PaymentResponseDto> filterPaymentByCode(@PathVariable String paymentCode) {
 
-        PaymentResponseDto paymentResponseDto = paymentservice.findPaymentByPaymentCode(paymentCode);
+        PaymentResponseDto paymentResponseDto = paymentService.findPaymentByPaymentCode(paymentCode);
         ApiResponse<PaymentResponseDto> response = ApiResponse.<PaymentResponseDto>builder()
                 .message("Payment retrieved successfully")
                 .success(true)
@@ -59,24 +58,35 @@ public class PaymentController {
 
     }
 
-    @PostMapping("/")
-    public ApiResponse<PaymentResponseDto> createPayment(@RequestBody PaymentRequestDto paymentRequestDto) {
+    @PostMapping("/process")
+    public ApiResponse<?> createPayment(
+            @RequestParam("orderId") String orderId,
+            @RequestBody PaymentRequestDto paymentRequestDto) {
 
-        PaymentResponseDto paymentResponseDto = paymentservice.savePayment(paymentRequestDto);
-        ApiResponse<PaymentResponseDto> response = ApiResponse.<PaymentResponseDto>builder()
-                .message("Payment placed successfully")
-                .success(true)
-                .itemCount(1)
-                .data(paymentResponseDto)
-                .build();
-        return response;
+        if (orderId.equals(paymentRequestDto.getOrderId())) {
+
+            PaymentResponseDto paymentResponseDto = paymentService.savePayment(paymentRequestDto);
+            ApiResponse<PaymentResponseDto> response = ApiResponse.<PaymentResponseDto>builder()
+                    .message("Payment placed successfully")
+                    .success(true)
+                    .itemCount(1)
+                    .data(paymentResponseDto)
+                    .build();
+            return response;
+        } else {
+            ApiResponse<?> response = ApiResponse.builder()
+                    .message("Order ids do not match")
+                    .success(true)
+                    .build();
+            return response;
+        }
 
     }
 
     @GetMapping("/")
     public ApiResponse<List<PaymentResponseDto>> getAllPayments() {
 
-        List<PaymentResponseDto> paymentResponseDtos = paymentservice.findAllPayments();
+        List<PaymentResponseDto> paymentResponseDtos = paymentService.findAllPayments();
 
         ApiResponse<List<PaymentResponseDto>> response = ApiResponse.<List<PaymentResponseDto>>builder()
                 .message("Payments retrieved successfully")
@@ -92,7 +102,7 @@ public class PaymentController {
             @RequestParam(required = false) LocalDate startDate,
             @RequestParam(required = false) LocalDate endDate) {
 
-        List<PaymentResponseDto> payments = paymentservice.findPaymentsByDateRange(startDate, endDate);
+        List<PaymentResponseDto> payments = paymentService.findPaymentsByDateRange(startDate, endDate);
         log.info(":::::::::::Start Date::::::::::: " + startDate);
         log.info(":::::::::::End Date::::::::::: " + endDate);
         ApiResponse<List<PaymentResponseDto>> response = ApiResponse.<List<PaymentResponseDto>>builder()
