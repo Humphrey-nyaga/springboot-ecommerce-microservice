@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.springframework.lang.NonNull;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,4 +24,11 @@ public class ProductCreateRequest {
     @NonNull
     private String productCode;
 
+
+    private String imageUrl;
+
+    private String description;
+
+    @NonNull
+    private Long categoryId;
 }

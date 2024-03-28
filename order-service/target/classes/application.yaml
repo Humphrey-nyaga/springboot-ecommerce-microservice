@@ -7,4 +7,19 @@ spring:
     import: optional:configserver:http://localhost:8888
   application:
     name: order-service
- 
+
+payment:
+  process-url: /api/v1/payments/process?orderId=
+
+openapi:
+  service:
+    title: Orders-service RestApiDocs
+    version: 1.0.0
+    url: http://localhost:7000
+
+springdoc:
+  api-docs:
+    path: /orders/v3/api-docs
+  swagger-ui:
+    path: /orders/swagger-ui.html
+    operationsSorter: method

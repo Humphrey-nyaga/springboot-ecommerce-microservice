@@ -9,17 +9,33 @@ spring:
         - id: products
           uri: lb://PRODUCT-SERVICE
           predicates:
-            - Path=/api/v1/products/**  
+            - Path=/api/v1/products/**, /products/**, /api/v1/category/**
 
         - id: orders
           uri: lb://ORDER-SERVICE
           predicates:
-            - Path=/api/v1/orders/** 
+            - Path=/api/v1/orders/**, /orders/** 
 
         - id: inventory
           uri: lb://INVENTORY-SERVICE
           predicates:
-            - Path=/api/v1/inventory/** 
+            - Path=/api/v1/inventory/**, /inventory/** 
+
+        - id: payments
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/api/v1/payments/** , /payments/** 
 
   application:
     name: api-gateway
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway Service

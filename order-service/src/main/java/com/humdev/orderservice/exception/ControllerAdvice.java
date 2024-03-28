@@ -22,7 +22,7 @@ public class ControllerAdvice {
                 .build();
 
         return response;
-    }  
+    }
 
     @ExceptionHandler(ProductServiceException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
@@ -83,6 +83,28 @@ public class ControllerAdvice {
                 .data(ex.getUnavailableProducts())
                 .build();
 
+        return response;
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.OK)
+    public ApiResponse<String> handleOrderNotFoundException(OrderNotFoundException ex) {
+
+        ApiResponse<String> response = ApiResponse.<String>builder()
+                .success(false)
+                .message(ex.getMessage())
+                .build();
+        return response;
+    }
+
+    @ExceptionHandler(OrderAmountDoesNotMatchException.class)
+    @ResponseStatus(code = HttpStatus.OK)
+    public ApiResponse<String> handleOrderAmountDoesNotMatchException(OrderAmountDoesNotMatchException ex) {
+
+        ApiResponse<String> response = ApiResponse.<String>builder()
+                .success(false)
+                .message(ex.getMessage())
+                .build();
         return response;
     }
 

@@ -1,0 +1,13 @@
+### Categories
+## @CreateCategory
+POST http://localhost:7000/api/v1/category/
+Content-Type: application/json
+
+{
+  "name": "String"
+}
+
+### Get Category by id
+GET http://localhost:7000/api/v1/category/{id}
+Content-Type: application/json
+

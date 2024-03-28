@@ -25,9 +25,9 @@ import lombok.Builder;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "payments",
-uniqueConstraints = {
-    @UniqueConstraint(columnNames = "payment_code", name = "UNIQUE_PAYMENT_CODE")
+@Table(name = "payments", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "payment_code", name = "UNIQUE_PAYMENT_CODE"),
+        @UniqueConstraint(columnNames = "order_id", name = "UNIQUE_ORDER_ID")
 })
 @Data
 @AllArgsConstructor
@@ -48,7 +48,8 @@ public class Payment {
     private LocalDateTime paymentDate;
 
     @Column(name = "order_id")
-    @NotNull @NotBlank
+    @NotNull
+    @NotBlank
     private String orderId;
 
     @Column(name = "payment_method")
@@ -67,6 +68,5 @@ public class Payment {
     protected void onCreate() {
         setPaymentCode("PYM-" + (java.util.UUID.randomUUID().toString()));
     }
-
 
 }

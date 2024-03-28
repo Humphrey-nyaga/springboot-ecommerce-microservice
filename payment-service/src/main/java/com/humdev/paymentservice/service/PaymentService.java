@@ -9,7 +9,7 @@ import com.humdev.paymentservice.model.PaymentResponseDto;
 
 public interface PaymentService {
 
-    public PaymentResponseDto savePayment(PaymentRequestDto PaymentRequestDto);
+    public PaymentResponseDto savePayment(PaymentRequestDto paymentRequestDto);
 
     public PaymentResponseDto findPaymentByPaymentCode(String paymentCode);
 

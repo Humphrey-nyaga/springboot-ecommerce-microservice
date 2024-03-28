@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.tomcat.util.http.parser.MediaType;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
@@ -20,13 +19,16 @@ import com.humdev.orderservice.config.GenerateOrderID;
 import com.humdev.orderservice.entity.Order;
 import com.humdev.orderservice.entity.OrderItem;
 import com.humdev.orderservice.entity.OrderItemResponse;
-import com.humdev.orderservice.exception.InvalidStartAndEndDatesException;
+import com.humdev.orderservice.entity.OrderStatus;
 import com.humdev.orderservice.exception.InventoryServiceException;
 import com.humdev.orderservice.exception.MissingDateRangeException;
 import com.humdev.orderservice.exception.NotEnoughQuantityException;
+import com.humdev.orderservice.exception.OrderAmountDoesNotMatchException;
+import com.humdev.orderservice.exception.OrderNotFoundException;
 import com.humdev.orderservice.exception.OrderServiceException;
 import com.humdev.orderservice.exception.ProductServiceException;
 import com.humdev.orderservice.model.ApiResponse;
+import com.humdev.orderservice.model.NewOrderResponse;
 import com.humdev.orderservice.model.OrderItemRequest;
 import com.humdev.orderservice.model.OrderRequest;
 import com.humdev.orderservice.model.OrderResponse;
@@ -51,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
         this.webClient = webClient;
     }
 
-    public OrderResponse createOrder(OrderRequest orderRequest) {
+    public NewOrderResponse createOrder(OrderRequest orderRequest) {
 
         List<String> productCodes = new ArrayList();
         List<Integer> productQuantity = new ArrayList();
@@ -72,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
 
             Order order = new Order();
             order.setOrderNumber(generateOrderID.generateOrderUUIDString());
-            
+
             log.info(":::::::::::::order uuid::::::::::: " + order.getOrderNumber());
 
             // reduce the inventory first
@@ -80,20 +82,25 @@ public class OrderServiceImpl implements OrderService {
             log.info("::::::Inventory Reduced ::::::::::: " + order.getOrderNumber());
 
             // Calculate order total
-            // TODO -> We dont want to be having total stored in the db they need to be tabulated from the db instead using a query
+            // TODO -> We dont want to be having total stored in the db they need to be
+            // tabulated from the db instead using a query
             List<Double> orderItemsPricesData = (List<Double>) orderItemsPrices.getData();
             List<BigDecimal> productPrices = orderItemsPricesData.stream()
                     .map(BigDecimal::valueOf)
                     .collect(Collectors.toList());
             BigDecimal orderTotal = this.calculateOrderTotal(productCodes, productQuantity, productPrices);
             order.setOrderTotal(orderTotal);
+            order.setOrderStatus(OrderStatus.PENDING);
 
             var orderItems = orderRequest.getOrderItems().stream().map(this::mapToOrderItemEntity).toList();
             order.setOrderItems(orderItems);
 
-            var newOrder = orderRepository.save(order);
+            // save 
+            NewOrderResponse newOrderResponse = this.mapToNewOrderResponse(orderRepository.save(order));
 
-            return this.mapToOrderResponse(newOrder);
+            newOrderResponse.setPaymentUrl("api/v1/payments/process?orderId=" + newOrderResponse.getOrderNumber());
+
+            return newOrderResponse;
 
         } else {
 
@@ -106,6 +113,15 @@ public class OrderServiceImpl implements OrderService {
             throw new OrderServiceException(itemAvailabilityResponse.getMessage());
 
         }
+
+    }
+
+    // use this for only new order - a payment url needs to be added.
+    // TODO consolidate this with the existing OrderResponse mapper
+    private NewOrderResponse mapToNewOrderResponse(Order newOrder) {
+        NewOrderResponse orderResponse = new NewOrderResponse();
+        BeanUtils.copyProperties(newOrder, orderResponse);
+        return orderResponse;
 
     }
 
@@ -228,5 +244,26 @@ public class OrderServiceImpl implements OrderService {
             orderTotal = orderTotal.add(productPrices.get(i).multiply(new BigDecimal(productQuantity.get(i))));
         }
         return orderTotal;
+    }
+
+    @Override
+    public Boolean validateOrder(String orderNumber, BigDecimal orderAmount) {
+
+        OrderResponse order = this.getOrderByOrderNumber(orderNumber);
+
+
+        if (order.getOrderTotal().compareTo(orderAmount) != 0) {
+            throw new OrderAmountDoesNotMatchException(
+                    "Order amount is invalid. Expected " + order.getOrderTotal() + " but was given " + orderAmount);
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public OrderResponse getOrderByOrderNumber(String orderNumber) {
+        Order order = orderRepository.findByOrderNumber(orderNumber).orElseThrow(
+                () -> new OrderNotFoundException("Order " + orderNumber + " does not exists."));
+        return this.mapToOrderResponse(order);
     }
 }

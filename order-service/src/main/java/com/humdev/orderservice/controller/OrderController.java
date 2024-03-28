@@ -1,5 +1,6 @@
 package com.humdev.orderservice.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.humdev.orderservice.model.ApiResponse;
+import com.humdev.orderservice.model.NewOrderResponse;
 import com.humdev.orderservice.model.OrderRequest;
 import com.humdev.orderservice.model.OrderResponse;
 import com.humdev.orderservice.service.OrderService;
@@ -31,16 +33,16 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    public ApiResponse<OrderResponse> placeOrder(@RequestBody OrderRequest orderRequest) {
+    public ApiResponse<NewOrderResponse> placeOrder(@RequestBody OrderRequest orderRequest) {
 
         long startTime = System.currentTimeMillis();
         log.info("::::Order request Start Time::::: {} " + startTime);
-        OrderResponse orderResponse = orderService.createOrder(orderRequest);
-        ApiResponse<OrderResponse> response = ApiResponse.<OrderResponse>builder()
+        NewOrderResponse newOrderResponse = orderService.createOrder(orderRequest);
+        ApiResponse<NewOrderResponse> response = ApiResponse.<NewOrderResponse>builder()
                 .message("Order placed successfully")
                 .success(true)
                 .itemCount(1)
-                .data(orderResponse)
+                .data(newOrderResponse)
                 .build();
 
                 
@@ -80,6 +82,20 @@ public class OrderController {
                 .success(true)
                 .itemCount(ordersResponse.size())
                 .data(ordersResponse)
+                .build();
+        return response;
+    }
+
+    @GetMapping("/validate")
+    public ApiResponse<?> filterOrders(
+            @RequestParam(required = true) String orderNumber,
+            @RequestParam(required = true) BigDecimal orderAmount) {
+
+        Boolean isValidOrder = orderService.validateOrder(orderNumber, orderAmount);
+        ApiResponse<?> response = ApiResponse.builder()
+                .message("Valid order")
+                .success(true)
+                .data(isValidOrder)
                 .build();
         return response;
     }

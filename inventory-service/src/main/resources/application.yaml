@@ -5,3 +5,18 @@ spring:
     active: development, default
   config:
     import: optional:configserver:http://localhost:8888
+  application:
+    name: inventory-service
+
+openapi:
+  service:
+    title: Inventory-service RestApiDocs
+    version: 1.0.0
+    url: http://localhost:7000
+
+springdoc:
+  api-docs:
+    path: /inventory/v3/api-docs
+  swagger-ui:
+    path: /inventory/swagger-ui.html
+    operationsSorter: method

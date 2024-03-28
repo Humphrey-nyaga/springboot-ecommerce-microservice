@@ -10,19 +10,24 @@ import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "orders",
+uniqueConstraints = {
+    @UniqueConstraint(columnNames = "order_number", name = "UNIQUE_ORDER_NUMBER")
+})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -38,7 +43,7 @@ public class Order {
     @CreationTimestamp
     private LocalDateTime orderTime;
 
-    @Column(name = "order_number", unique = false)
+    @Column(name = "order_number")
     private String orderNumber;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
@@ -46,6 +51,12 @@ public class Order {
 
     @Column(name = "order_total")
     private BigDecimal orderTotal;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
+    @Column(name = "customer_id")
+    private String userId;
 
 
     //  @PrePersist

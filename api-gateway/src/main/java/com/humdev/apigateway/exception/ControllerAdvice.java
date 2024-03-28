@@ -7,20 +7,20 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+//@RestControllerAdvice
 public class ControllerAdvice {
 
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiResponse<?> notNotFoundException(NotFoundException ex) {
+    // @ExceptionHandler(NotFoundException.class)
+    // @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+    // public ApiResponse<?> notNotFoundException(NotFoundException ex) {
 
-        ApiResponse<?> response = ApiResponse.builder()
-                .success(false)
-                .message("An Error Occurred")
-                .build();
+    //     ApiResponse<?> response = ApiResponse.builder()
+    //             .success(false)
+    //             .message("An Error Occurred")
+    //             .build();
 
-        return response;
-    }
+    //     return response;
+    // }
     
 }
 // 

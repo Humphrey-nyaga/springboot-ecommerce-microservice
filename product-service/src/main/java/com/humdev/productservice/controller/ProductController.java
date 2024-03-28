@@ -3,7 +3,7 @@ package com.humdev.productservice.controller;
 import com.humdev.productservice.model.ApiResponse;
 
 import com.humdev.productservice.model.ProductCreateRequest;
-import com.humdev.productservice.model.ProductCreateResponse;
+import com.humdev.productservice.model.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +29,12 @@ public class ProductController {
     }
 
     @PostMapping("/")
-    public ApiResponse<ProductCreateResponse> createProduct(@RequestBody ProductCreateRequest productCreateRequest) {
+    public ApiResponse<ProductResponse> createProduct(@RequestBody ProductCreateRequest productCreateRequest) {
 
-        ProductCreateResponse newProduct = productService.createProduct(productCreateRequest);
+        ProductResponse newProduct = productService.createProduct(productCreateRequest);
         System.out.println(":::::::::::::::ProductCreateResponse:::::_>  " + newProduct);
 
-        return ApiResponse.<ProductCreateResponse>builder()
+        return ApiResponse.<ProductResponse>builder()
                 .message("Product has been added successfully")
                 .success(true)
                 .itemCount(1)
@@ -43,9 +43,9 @@ public class ProductController {
     }
 
     @GetMapping("/")
-    public ApiResponse<List<Product>> listAllProducts() {
-        List<Product> products = productService.findAllProducts();
-        return ApiResponse.<List<Product>>builder()
+    public ApiResponse<List<ProductResponse>> listAllProducts() {
+        List<ProductResponse> products = productService.findAllProducts();
+        return ApiResponse.<List<ProductResponse>>builder()
                 .message("Products retrieved successfully")
                 .success(true)
                 .itemCount(products.size())
@@ -54,10 +54,10 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ApiResponse<ProductCreateResponse> getProductById(@PathVariable Long productId) {
-        ProductCreateResponse product = productService.findProductById(productId);
+    public ApiResponse<ProductResponse> getProductById(@PathVariable Long productId) {
+        ProductResponse product = productService.findProductById(productId);
 
-        return ApiResponse.<ProductCreateResponse>builder()
+        return ApiResponse.<ProductResponse>builder()
                 .message("Product retrieved successfully")
                 .success(true)
                 .itemCount(1)
@@ -99,11 +99,11 @@ public class ProductController {
     // TODO Batch uploads inserting one value at a time. Batch insert needs to be enabled in properties
     @PostMapping("/batchUpload")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ApiResponse<List<ProductCreateResponse>> createInventory(
+    public ApiResponse<List<ProductResponse>> createInventory(
             @RequestBody List<@Valid ProductCreateRequest> productsCreateRequests) {
                 
-        List<ProductCreateResponse> newProducts = productService.createProductsInBatch(productsCreateRequests);
-        ApiResponse<List<ProductCreateResponse>> response = ApiResponse.<List<ProductCreateResponse>>builder()
+        List<ProductResponse> newProducts = productService.createProductsInBatch(productsCreateRequests);
+        ApiResponse<List<ProductResponse>> response = ApiResponse.<List<ProductResponse>>builder()
                 .data(newProducts)
                 .message("Products added successfully")
                 .itemCount(newProducts.size())

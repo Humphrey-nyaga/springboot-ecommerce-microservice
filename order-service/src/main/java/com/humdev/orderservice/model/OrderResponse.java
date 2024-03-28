@@ -23,4 +23,7 @@ public class OrderResponse {
 
     private BigDecimal orderTotal;
 
+    private String userId;
+
+
 }
