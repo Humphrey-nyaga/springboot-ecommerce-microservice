@@ -38,7 +38,6 @@ public class OrderItem {
     //? TODO -> On save the order items does not get the parent foreign key as needed
     @ManyToOne
     @JoinColumn(name = "order_id")
-    @JsonIgnore 
     private Order order;
 
 }

@@ -11,10 +11,8 @@ com/humdev/orderservice/exception/ProductServiceException.class
 com/humdev/orderservice/entity/OrderItem$OrderItemBuilder.class
 com/humdev/orderservice/model/OrderResponse$OrderResponseBuilder.class
 com/humdev/orderservice/exception/InvalidStartAndEndDatesException.class
-com/humdev/orderservice/entity/OrderItemResponse$OrderItemResponseBuilder.class
 com/humdev/orderservice/OrderServiceApplication.class
 com/humdev/orderservice/entity/Order.class
-com/humdev/orderservice/entity/OrderItemResponse.class
 com/humdev/orderservice/exception/InventoryServiceException.class
 com/humdev/orderservice/exception/ControllerAdvice.class
 com/humdev/orderservice/controller/OrderController.class

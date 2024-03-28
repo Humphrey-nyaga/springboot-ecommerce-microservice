@@ -1,4 +1,4 @@
-package com.humdev.orderservice.entity;
+package com.humdev.orderservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

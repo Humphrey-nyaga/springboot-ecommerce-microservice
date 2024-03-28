@@ -18,7 +18,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.humdev.orderservice.config.GenerateOrderID;
 import com.humdev.orderservice.entity.Order;
 import com.humdev.orderservice.entity.OrderItem;
-import com.humdev.orderservice.entity.OrderItemResponse;
+import com.humdev.orderservice.model.OrderItemResponse;
 import com.humdev.orderservice.entity.OrderStatus;
 import com.humdev.orderservice.exception.InventoryServiceException;
 import com.humdev.orderservice.exception.MissingDateRangeException;
@@ -55,13 +55,21 @@ public class OrderServiceImpl implements OrderService {
 
     public NewOrderResponse createOrder(OrderRequest orderRequest) {
 
+        Order order = new Order();
+
         List<String> productCodes = new ArrayList();
         List<Integer> productQuantity = new ArrayList();
+
+        List<OrderItem> orderItems = new ArrayList<>();
 
         for (OrderItemRequest orderItemRequest : orderRequest.getOrderItems()) {
 
             productCodes.add(orderItemRequest.getProductCode());
             productQuantity.add(orderItemRequest.getQuantity());
+
+            OrderItem orderItem = mapToOrderItemEntity(orderItemRequest);
+            orderItem.setOrder(order);
+            orderItems.add(orderItem);
         }
 
         log.info("Product Codes " + productCodes);
@@ -72,7 +80,6 @@ public class OrderServiceImpl implements OrderService {
 
         if (itemAvailabilityResponse.isSuccess() && orderItemsPrices.isSuccess()) {
 
-            Order order = new Order();
             order.setOrderNumber(generateOrderID.generateOrderUUIDString());
 
             log.info(":::::::::::::order uuid::::::::::: " + order.getOrderNumber());
@@ -81,7 +88,6 @@ public class OrderServiceImpl implements OrderService {
             ApiResponse<?> inventoryReduced = this.reduceItemsInventory(productCodes, productQuantity);
             log.info("::::::Inventory Reduced ::::::::::: " + order.getOrderNumber());
 
-            // Calculate order total
             // TODO -> We dont want to be having total stored in the db they need to be
             // tabulated from the db instead using a query
             List<Double> orderItemsPricesData = (List<Double>) orderItemsPrices.getData();
@@ -91,11 +97,9 @@ public class OrderServiceImpl implements OrderService {
             BigDecimal orderTotal = this.calculateOrderTotal(productCodes, productQuantity, productPrices);
             order.setOrderTotal(orderTotal);
             order.setOrderStatus(OrderStatus.PENDING);
-
-            var orderItems = orderRequest.getOrderItems().stream().map(this::mapToOrderItemEntity).toList();
             order.setOrderItems(orderItems);
 
-            // save 
+            // save
             NewOrderResponse newOrderResponse = this.mapToNewOrderResponse(orderRepository.save(order));
 
             newOrderResponse.setPaymentUrl("api/v1/payments/process?orderId=" + newOrderResponse.getOrderNumber());
@@ -251,7 +255,6 @@ public class OrderServiceImpl implements OrderService {
 
         OrderResponse order = this.getOrderByOrderNumber(orderNumber);
 
-
         if (order.getOrderTotal().compareTo(orderAmount) != 0) {
             throw new OrderAmountDoesNotMatchException(
                     "Order amount is invalid. Expected " + order.getOrderTotal() + " but was given " + orderAmount);
@@ -266,4 +269,12 @@ public class OrderServiceImpl implements OrderService {
                 () -> new OrderNotFoundException("Order " + orderNumber + " does not exists."));
         return this.mapToOrderResponse(order);
     }
+
+    @Override
+    public List<OrderItemResponse> getOrderItemsByOrderNumber(String orderNumber) {
+        Order order = orderRepository.findByOrderNumber(orderNumber).orElseThrow(
+                () -> new OrderNotFoundException("Order " + orderNumber + " does not exist."));
+        return order.getOrderItems().stream().map(this::mapToOrderItemResponse).toList();
+    }
+
 }

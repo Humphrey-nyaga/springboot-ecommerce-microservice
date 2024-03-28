@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderItemRequest {
+    
     private String productCode;
 
     private Integer quantity;

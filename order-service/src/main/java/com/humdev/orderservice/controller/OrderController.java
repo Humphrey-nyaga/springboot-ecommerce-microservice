@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.humdev.orderservice.model.ApiResponse;
 import com.humdev.orderservice.model.NewOrderResponse;
+import com.humdev.orderservice.model.OrderItemResponse;
 import com.humdev.orderservice.model.OrderRequest;
 import com.humdev.orderservice.model.OrderResponse;
 import com.humdev.orderservice.service.OrderService;
 
-import jakarta.ws.rs.QueryParam;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -82,6 +83,19 @@ public class OrderController {
                 .success(true)
                 .itemCount(ordersResponse.size())
                 .data(ordersResponse)
+                .build();
+        return response;
+    }
+    
+    @GetMapping("/orderItems/{orderId}")
+    public ApiResponse<List<OrderItemResponse>> orderItems(@PathVariable String orderId) {
+
+        List<OrderItemResponse> ordersItemsResponse = orderService.getOrderItemsByOrderNumber(orderId);
+        ApiResponse<List<OrderItemResponse>> response = ApiResponse.<List<OrderItemResponse>>builder()
+                .message("Order Items Retrieved Successfully")
+                .success(true)
+                .itemCount(ordersItemsResponse.size())
+                .data(ordersItemsResponse)
                 .build();
         return response;
     }

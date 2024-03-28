@@ -4,7 +4,6 @@
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/exception/ProductServiceException.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/model/OrderResponse.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/service/impl/OrderServiceImpl.java
-/home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/entity/OrderItemResponse.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/entity/OrderItem.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/exception/ControllerAdvice.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/controller/OrderController.java
@@ -18,6 +17,7 @@
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/exception/ProductNotFoundException.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/exception/InventoryServiceException.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/model/NewOrderResponse.java
+/home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/model/OrderItemResponse.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/repository/OrderRepository.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/model/OrderRequest.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/entity/OrderStatus.java
