@@ -1,5 +1,15 @@
 server:
   port: 8888
+  tomcat:
+    accept-count: ${SERVER_TOMCAT_ACCEPT_COUNT:6}
+    max-connections: ${SERVER_TOMCAT_MAX_CONNECTIONS:10}
+    threads:
+      max: ${SERVER_TOMCAT_THREADS_MAX:3}
+      min-spare: ${SERVER_TOMCAT_THREADS_MIN_SPARE:1}
+
+java:
+  tool-options: ${JAVA_TOOL_OPTIONS:"-XX:+UseSerialGC -Xss512k -XX:MaxRAM=150m"}
+
 spring:
   application:
     name: config-server

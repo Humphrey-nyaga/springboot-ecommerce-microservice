@@ -29,6 +29,14 @@ public class PaymentRequestDto {
 
     private String paymentProvider;
 
+    private String firstName;
+
+    private String lastName;
+
+    private String email;
+    
+    private String mobileMoneyPhoneNumber;
+
     @Min(value = 1, message = "Payment amount cannot be less than 1")
     private BigDecimal amount;
 }

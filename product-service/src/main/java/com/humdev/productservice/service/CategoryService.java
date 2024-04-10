@@ -13,6 +13,8 @@ public interface CategoryService {
 
     CategoryResponse listById(Long id);
 
+    CategoryResponse listByName(String categoryName);
+
     List<CategoryResponse> list();
     
     List<CategoryResponse> createCategoriesInBatch(List<@Valid CategoryCreateRequest> categoryCreateRequest);

@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.humdev.paymentservice.entity.Payment;
@@ -59,6 +60,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public PaymentResponseDto savePayment(PaymentRequestDto paymentRequestDto) {
 
         // TODO logic to validate order, amounts etc

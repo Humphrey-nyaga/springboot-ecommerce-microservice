@@ -1,5 +1,15 @@
 server:
   port: 6005
+  tomcat:
+    accept-count: ${SERVER_TOMCAT_ACCEPT_COUNT:3}
+    max-connections: ${SERVER_TOMCAT_MAX_CONNECTIONS:3}
+    threads:
+      max: ${SERVER_TOMCAT_THREADS_MAX:3}
+      min-spare: ${SERVER_TOMCAT_THREADS_MIN_SPARE:1}
+
+java:
+  tool-options: ${JAVA_TOOL_OPTIONS:"-XX:+UseSerialGC -Xss512k -XX:MaxRAM=150m"}
+
 spring:
   profiles:
     active: development, default

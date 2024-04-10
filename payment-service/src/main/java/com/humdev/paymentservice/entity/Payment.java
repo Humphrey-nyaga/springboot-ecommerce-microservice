@@ -64,6 +64,22 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
+    @Column(name = "payment_provider")
+    private String paymentProvider;
+
+    @Column(name = "payer_first_name")
+    private String firstName;
+
+    @Column(name = "payer_last_name")
+    private String lastName;
+
+    @Column(name = "payer_email")
+    private String email;
+    
+    @Column(name = "mobile_money_phone_number")
+    private String mobileMoneyPhoneNumber;
+
+
     @PrePersist
     protected void onCreate() {
         setPaymentCode("PYM-" + (java.util.UUID.randomUUID().toString()));

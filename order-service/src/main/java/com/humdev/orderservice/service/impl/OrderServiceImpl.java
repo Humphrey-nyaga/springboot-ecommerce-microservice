@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.humdev.orderservice.config.GenerateOrderID;
 import com.humdev.orderservice.entity.Order;
@@ -43,16 +44,16 @@ import reactor.core.publisher.Mono;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final GenerateOrderID generateOrderID;
     private final WebClient.Builder webClient;
 
-    public OrderServiceImpl(OrderRepository orderRepository, GenerateOrderID generateOrderID,
+    public OrderServiceImpl(OrderRepository orderRepository,
             WebClient.Builder webClient) {
         this.orderRepository = orderRepository;
-        this.generateOrderID = generateOrderID;
+
         this.webClient = webClient;
     }
 
+   @Transactional
     public NewOrderResponse createOrder(OrderRequest orderRequest) {
 
         Order order = new Order();
@@ -80,7 +81,6 @@ public class OrderServiceImpl implements OrderService {
 
         if (itemAvailabilityResponse.isSuccess() && orderItemsPrices.isSuccess()) {
 
-            order.setOrderNumber(generateOrderID.generateOrderUUIDString());
 
             log.info(":::::::::::::order uuid::::::::::: " + order.getOrderNumber());
 

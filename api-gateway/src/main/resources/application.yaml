@@ -1,15 +1,41 @@
 server:
   port: 7000
+  tomcat:
+    accept-count: ${SERVER_TOMCAT_ACCEPT_COUNT:3}
+    max-connections: ${SERVER_TOMCAT_MAX_CONNECTIONS:3}
+    threads:
+      max: ${SERVER_TOMCAT_THREADS_MAX:3}
+      min-spare: ${SERVER_TOMCAT_THREADS_MIN_SPARE:1}
+
+java:
+  tool-options: ${JAVA_TOOL_OPTIONS:"-XX:+UseSerialGC -Xss512k -XX:MaxRAM=150m"}
+
 spring:  
   config:
     import: optional:configserver:http://localhost:8888
   cloud:
     gateway:
+      httpclient:
+        wiretap: true
+      httpserver:
+        wiretap: true
+        
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: '*'
+            allowedHeaders: '*'
+            allowedMethods:
+            - GET    
+            - POST
+            - DELETE
+            - PUT
       routes:
         - id: products
           uri: lb://PRODUCT-SERVICE
           predicates:
-            - Path=/api/v1/products/**, /products/**, /api/v1/category/**
+            - Path=/api/v1/products/**, /products/**, /api/v1/categories/**
 
         - id: orders
           uri: lb://ORDER-SERVICE
@@ -28,7 +54,16 @@ spring:
 
   application:
     name: api-gateway
-
+    
+logging:
+  level:
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
+        
 springdoc:
   api-docs:
     enabled: true

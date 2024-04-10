@@ -63,23 +63,17 @@ public class PaymentController {
             @RequestParam("orderId") String orderId,
             @RequestBody PaymentRequestDto paymentRequestDto) {
 
-        if (orderId.equals(paymentRequestDto.getOrderId())) {
+
 
             PaymentResponseDto paymentResponseDto = paymentService.savePayment(paymentRequestDto);
             ApiResponse<PaymentResponseDto> response = ApiResponse.<PaymentResponseDto>builder()
-                    .message("Payment placed successfully")
+                    .message("Payment processed successfully")
                     .success(true)
                     .itemCount(1)
                     .data(paymentResponseDto)
                     .build();
             return response;
-        } else {
-            ApiResponse<?> response = ApiResponse.builder()
-                    .message("Order ids do not match")
-                    .success(true)
-                    .build();
-            return response;
-        }
+        
 
     }
 

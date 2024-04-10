@@ -63,7 +63,7 @@ POST http://localhost:7000/api/v1/payments/process?orderId=ORD-78aadb06-4a33-40f
 Content-Type: application/json
 
     {
-      "orderId": "ORD-78aadb06-4a33-40fe-81dc-90df7fd843dd-0",
+      "orderId": "ORD-e8294c1a-c801-4baf-8805-f07c4757a4d0-0",
       "paymentMethod": "MOBILE_MONEY",
       "paymentProvider": "M-PESA",
       "amount": 147000.00

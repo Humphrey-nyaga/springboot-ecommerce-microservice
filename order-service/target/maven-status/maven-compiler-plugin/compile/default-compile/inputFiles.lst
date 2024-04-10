@@ -12,7 +12,6 @@
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/entity/Order.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/config/WebClientConfig.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/exception/OrderNotFoundException.java
-/home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/config/WebConfig.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/exception/OrderAmountDoesNotMatchException.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/exception/ProductNotFoundException.java
 /home/hum/projects/Training/ecommerce-microservice/ecommerce-api/order-service/src/main/java/com/humdev/orderservice/exception/InventoryServiceException.java

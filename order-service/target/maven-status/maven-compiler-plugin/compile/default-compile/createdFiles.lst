@@ -3,7 +3,6 @@ com/humdev/orderservice/model/OrderRequest$OrderRequestBuilder.class
 com/humdev/orderservice/exception/OrderAmountDoesNotMatchException.class
 com/humdev/orderservice/exception/OrderServiceException.class
 com/humdev/orderservice/exception/ProductNotFoundException.class
-com/humdev/orderservice/config/WebConfig.class
 com/humdev/orderservice/entity/OrderItem.class
 com/humdev/orderservice/exception/NotEnoughQuantityException.class
 com/humdev/orderservice/model/ApiResponse$ApiResponseBuilder.class

@@ -35,6 +35,12 @@ public class CategoryServiceImpl implements CategoryService {
                 () -> new CategoryNotFoundException("Category with id " + id + " not found"));
         return this.mapCategoryToCategoryResponse(category);
     }
+      @Override
+    public CategoryResponse listByName(String categoryName) {
+        Category category = categoryRepository.findByName(categoryName).orElseThrow(
+                () -> new CategoryNotFoundException("Category with name " + categoryName + " not found"));
+        return this.mapCategoryToCategoryResponse(category);
+    }
 
     @Override
     public List<CategoryResponse> list() {

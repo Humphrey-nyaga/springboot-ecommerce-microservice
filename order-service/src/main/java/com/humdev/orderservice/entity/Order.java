@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 uniqueConstraints = {
     @UniqueConstraint(columnNames = "order_number", name = "UNIQUE_ORDER_NUMBER")
 })
-@NoArgsConstructor
+
 @AllArgsConstructor
 @Builder
 @Data
@@ -57,6 +57,10 @@ public class Order {
 
     @Column(name = "customer_id")
     private String userId;
+    
+    public Order() {
+    this.orderNumber = "ORD-" + UUID.randomUUID().toString();
+}
 
 
     //  @PrePersist

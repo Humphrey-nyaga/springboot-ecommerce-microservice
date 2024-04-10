@@ -19,7 +19,7 @@ import com.humdev.productservice.service.CategoryService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("api/v1/category")
+@RequestMapping("api/v1/categories")
 public class CategoryController {
     private final CategoryService categoryService;
 
@@ -27,7 +27,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ApiResponse<List<CategoryResponse>> listAllCategories() {
         List<CategoryResponse> categoriesResponse = categoryService.list();
 
@@ -39,7 +39,7 @@ public class CategoryController {
                 .build();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/categoryId/{id}")
     public ApiResponse<CategoryResponse> findCategory(@PathVariable Long id) {
         CategoryResponse categoryResponse = categoryService.listById(id);
 
@@ -51,6 +51,17 @@ public class CategoryController {
                 .build();
     }
 
+    @GetMapping("/{categoryName}")
+    public ApiResponse<CategoryResponse> findCategory(@PathVariable("categoryName") String categoryName) {
+        CategoryResponse categoryResponse = categoryService.listByName(categoryName);
+
+        return ApiResponse.<CategoryResponse>builder()
+                .message("Category retrieved successfully")
+                .success(true)
+                .itemCount(1)
+                .data(categoryResponse)
+                .build();
+    }
     @PostMapping("/")
     public ApiResponse<CategoryResponse> createCategory(@Valid @RequestBody CategoryCreateRequest categoryCreateRequest) {
         CategoryResponse categoryResponse = categoryService.createCategory(categoryCreateRequest);

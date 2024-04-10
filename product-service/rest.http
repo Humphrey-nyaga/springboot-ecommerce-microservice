@@ -1,4 +1,6 @@
 ##@RetrieveRequest By ID
-# @name ProductById
-GET http://localhost:6001/api/v1/products/ HTTP/1.1
+### @nameProductById
+
+
+GET http://localhost:6000/api/v1/products/ HTTP/1.1
 Content-Type: application/json

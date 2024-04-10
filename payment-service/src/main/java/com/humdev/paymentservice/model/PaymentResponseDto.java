@@ -30,8 +30,6 @@ public class PaymentResponseDto {
 
     private String orderId;
 
-    private PaymentMethod paymentMethod;
-
     private BigDecimal amount;
 
     @JsonProperty("status")
